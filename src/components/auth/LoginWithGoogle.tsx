@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 export default function LoginWithGoogle() {
   const router = useRouter();
 
-  async function handleGithubLogin() {
+  async function handleGoogleLogin() {
     const result = await signIn('google', { redirect: false, callbackUrl: '/my-tasks' });
 
     if (result?.error) {
@@ -20,7 +20,7 @@ export default function LoginWithGoogle() {
   return (
     <Button
       type="button"
-      onClick={handleGithubLogin}
+      onClick={handleGoogleLogin}
       variant="secondary"
       className="w-full cursor-pointer"
     >
