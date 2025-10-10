@@ -6,10 +6,19 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import prisma from './prisma';
-import { saltAndHashPassword } from '@/lib/helper';
+// import { saltAndHashPassword } from '@/lib/helper';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: { strategy: 'jwt' },
+  callbacks: {
+    async session({ session, token }) {
+      if (token.sub) {
+        session.user.id = token.sub;
+      }
+      return session;
+    },
+  },
+
   adapter: PrismaAdapter(prisma),
   providers: [
     GithubProvider({
@@ -53,4 +62,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  // callbacks: {
+  //   session: async ({ session, user }) => {
+  //     if (session?.user) {
+  //       session.user.id = user.id;
+  //     }
+  //     return session;
+  //   },
+  // },
 });

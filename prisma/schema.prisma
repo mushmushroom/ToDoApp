@@ -65,3 +65,12 @@ model VerificationToken {
   @@unique([identifier, token])
   @@map("verification_tokens")
 }
+
+model Tasks {
+  id        String   @id @default(cuid())
+  title     String
+  userId    String?
+  demoId    String?
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
