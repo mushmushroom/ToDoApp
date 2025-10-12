@@ -36,7 +36,7 @@
 // });
 
 // export { handler as GET, handler as POST };
-import { handlers } from '@/config/auth';
+import { handlers } from '@/lib/config/auth';
 
 export const { GET, POST } = handlers;
 // export { handlers as GET, handlers as POST };

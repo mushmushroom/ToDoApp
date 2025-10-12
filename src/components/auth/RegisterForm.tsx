@@ -1,5 +1,5 @@
 import FormField from '@/components/custom/FormField';
-import useAuth from '@/hooks/useAuth';
+import useAuth from '@/lib/hooks/useAuth';
 import { Button } from '../ui/button';
 
 export default function RegisterForm() {
