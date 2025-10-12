@@ -79,7 +79,7 @@ export default function useAuth() {
     let token: string;
     try {
       token = await executeRecaptcha('register_submit');
-    } catch (error) {
+    } catch {
       toast.error('CAPTCHA failed. Please try again later.');
       return;
     }

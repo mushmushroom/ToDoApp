@@ -12,7 +12,10 @@ const newTaskSchema = z.object({
 type NewTaskInput = z.infer<typeof newTaskSchema>;
 
 export default function AddTaskForm() {
-  const { register, handleSubmit, formState:{errors, isSubmitting} } = useForm<NewTaskInput>({ resolver: zodResolver(newTaskSchema) });
+  const {
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<NewTaskInput>({ resolver: zodResolver(newTaskSchema) });
   return (
     <form className="flex gap-3 max-w-lg w-full">
       <FormField
@@ -25,7 +28,7 @@ export default function AddTaskForm() {
         errors={errors.taskTitle}
         hasLabelHidden
       />
-      <Button className="cursor-pointer">{isSubmitting ? "Adding..." : "Add task"}</Button>
+      <Button className="cursor-pointer">{isSubmitting ? 'Adding...' : 'Add task'}</Button>
     </form>
   );
 }
