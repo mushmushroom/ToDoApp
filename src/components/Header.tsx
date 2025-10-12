@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import React from 'react';
-import { NavigationMenu, NavigationMenuLink, NavigationMenuList } from './ui/navigation-menu';
+import { NavigationMenu, NavigationMenuLink } from './ui/navigation-menu';
 import { useSession } from 'next-auth/react';
 import LogoutButton from './LogoutButton';
 

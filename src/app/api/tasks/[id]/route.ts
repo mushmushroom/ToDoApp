@@ -2,7 +2,7 @@ import { auth } from '@/lib/config/auth';
 import prisma from '@/lib/config/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const session = await auth();
   const currentId = session?.user?.id;
 
@@ -10,7 +10,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { id } = params;
+  const { id } = await context.params;
 
   const task = await prisma.tasks.findFirst({
     where: {
@@ -59,7 +59,7 @@ export async function PATCH(request: NextRequest, context: { params: Promise<{ i
   return NextResponse.json(updatedTask, { status: 200 });
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const session = await auth();
   const currentId = session?.user?.id;
 
@@ -67,9 +67,11 @@ export async function DELETE(_req: NextRequest, { params }: { params: { id: stri
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const { id: taskId } = await context.params;
+
   const task = await prisma.tasks.findFirst({
     where: {
-      id: params.id,
+      id: taskId,
       userId: currentId,
     },
   });
@@ -78,7 +80,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: { id: stri
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
 
-  await prisma.tasks.delete({ where: { id: params.id } });
+  await prisma.tasks.delete({ where: { id: taskId } });
 
   return NextResponse.json({ success: true }, { status: 200 });
 }
