@@ -2,7 +2,7 @@
 import FormField from '../custom/FormField';
 import { Button } from '../ui/button';
 
-import useAuth from '@/hooks/useAuth';
+import useAuth from '@/lib/hooks/useAuth';
 
 export default function LoginForm() {
   const { registerSignIn, handleSubmitSignIn, onSubmitSignIn, errorsSignIn, isSignInSubmitting } =

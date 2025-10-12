@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { auth } from '@/config/auth';
+import { auth } from '@/lib/config/auth';
 
 export default async function Home() {
   const data = await auth();

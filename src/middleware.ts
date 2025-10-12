@@ -1,6 +1,6 @@
 // export { auth as middleware } from '@/config/auth';
 
-import { auth } from '@/config/auth';
+import { auth } from '@/lib/config/auth';
 import { NextResponse } from 'next/server';
 
 export default auth((req) => {
