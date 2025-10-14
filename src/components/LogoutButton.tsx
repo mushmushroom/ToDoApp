@@ -7,5 +7,9 @@ export default function LogoutButton() {
     signOut({ redirectTo: '/' });
     toast('You have been successfully logged out.');
   }
-  return <Button onClick={handleLogout} className="cursor-pointer">Logout</Button>;
+  return (
+    <Button onClick={handleLogout} variant="secondary" className="cursor-pointer text-xl">
+      Logout
+    </Button>
+  );
 }
