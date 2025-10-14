@@ -55,7 +55,15 @@ export default function TaskDialog({ mode, defaultTitle, onSubmit }: TaskDialogP
   }, [defaultTitle, isOpen, reset]);
 
   async function handleFormSubmit(data: TaskTitleInput) {
-    onSubmit(data.taskTitle);
+    const newTitle = data.taskTitle.trim();
+    const oldTitle = (defaultTitle ?? '').trim();
+
+    if (mode === 'edit' && newTitle === oldTitle) {
+      setIsOpen(false);
+      return;
+    }
+
+    onSubmit(newTitle);
     reset();
     setIsOpen(false);
   }
