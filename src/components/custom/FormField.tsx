@@ -21,7 +21,7 @@ interface FormFieldProps {
   isPasswordField?: boolean;
   hasLabelHidden?: boolean;
   className?: string;
-  watch?: (name: string) => any;
+  watch?: (name: string) => unknown[];
 }
 
 export default function FormField({

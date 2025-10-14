@@ -1,9 +1,6 @@
 import React, { memo } from 'react';
-import { FaTrash } from 'react-icons/fa';
-import { Button } from './ui/button';
 import TaskDialog from './TaskDialog';
 import { useDeleteTask, useUpdateTask } from '@/lib/hooks/useTasks';
-import { Delete } from 'lucide-react';
 import DeleteDialog from './DeleteDialog';
 
 interface TaskItemProps {
@@ -22,7 +19,7 @@ const TaskItem = ({ id, title, completed }: TaskItemProps) => {
         <input
           type="checkbox"
           checked={completed}
-          onChange={(title) => updateTask.mutate({ id, data: { completed: !completed } })}
+          onChange={() => updateTask.mutate({ id, data: { completed: !completed } })}
           className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-400 cursor-pointer shrink-0"
         />
         <span className={`text-base ${completed ? 'line-through text-gray-400' : 'text-gray-800'}`}>
@@ -36,15 +33,7 @@ const TaskItem = ({ id, title, completed }: TaskItemProps) => {
           defaultTitle={title}
           onSubmit={(title) => updateTask.mutate({ id, data: { title } })}
         />
-        {/* <Button
-          onClick={(title) => deleteTask.mutate(id)}
-          variant="ghost"
-          className="p-2 text-red-600 border rounded hover:bg-red-50 cursor-pointer"
-          title="Delete a task"
-        >
-          <FaTrash />
-        </Button> */}
-        <DeleteDialog title={ title}  onConfirm={() => deleteTask.mutate(id)} />
+        <DeleteDialog title={title} onConfirm={() => deleteTask.mutate(id)} />
       </div>
     </div>
   );
