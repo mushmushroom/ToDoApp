@@ -1,15 +1,15 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from './ui/alert-dialog';
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';
 import { Button } from './ui/button';
 import { FaEdit } from 'react-icons/fa';
 import * as z from 'zod';
@@ -17,7 +17,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import FormField from './custom/FormField';
 import { CHAR_LIMIT } from '@/lib/constants';
-// import { useCreateTask, useUpdateTask } from '@/lib/hooks/useTasks';
 
 const taskTitleSchema = z.object({
   taskTitle: z
@@ -36,8 +35,10 @@ interface TaskDialogProps {
   defaultTitle?: string;
   onSubmit: (title: string) => void;
 }
+
 export default function TaskDialog({ mode, defaultTitle, onSubmit }: TaskDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
+
   const {
     register,
     formState: { errors, isSubmitting },
@@ -58,6 +59,7 @@ export default function TaskDialog({ mode, defaultTitle, onSubmit }: TaskDialogP
     const newTitle = data.taskTitle.trim();
     const oldTitle = (defaultTitle ?? '').trim();
 
+    // Don’t send request if nothing changed
     if (mode === 'edit' && newTitle === oldTitle) {
       setIsOpen(false);
       return;
@@ -69,12 +71,10 @@ export default function TaskDialog({ mode, defaultTitle, onSubmit }: TaskDialogP
   }
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger asChild>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
         {mode === 'add' ? (
-          <Button className="cursor-pointer" variant="default">
-            {mode === 'add' ? 'Add new task' : 'Edit'}
-          </Button>
+          <Button variant="default">Add new task</Button>
         ) : (
           <Button
             variant="ghost"
@@ -84,20 +84,19 @@ export default function TaskDialog({ mode, defaultTitle, onSubmit }: TaskDialogP
             <FaEdit />
           </Button>
         )}
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>
-            {mode === 'add' ? 'Add a new task' : 'Edit this task'}
-          </AlertDialogTitle>
-          <AlertDialogDescription>
+      </DialogTrigger>
+
+      <DialogContent className="max-w-lg">
+        <DialogHeader>
+          <DialogTitle>{mode === 'add' ? 'Add a new task' : 'Edit this task'}</DialogTitle>
+          <DialogDescription>
             {mode === 'add'
               ? 'Enter the title of your new task below.'
               : 'Update the title of your task.'}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+          </DialogDescription>
+        </DialogHeader>
 
-        <div className="flex gap-3 max-w-lg w-full">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col gap-4">
           <FormField
             className="flex-grow"
             placeholder="e.g. Get groceries"
@@ -109,15 +108,17 @@ export default function TaskDialog({ mode, defaultTitle, onSubmit }: TaskDialogP
             hasLabelHidden
             watch={watch}
           />
-        </div>
 
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleSubmit(handleFormSubmit)}>
-            {isSubmitting ? 'Saving...' : 'Save'}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          <DialogFooter className="flex justify-end gap-2 mt-4">
+            <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Saving...' : 'Save'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }
