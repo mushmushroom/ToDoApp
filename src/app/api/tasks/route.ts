@@ -14,6 +14,14 @@ export async function GET() {
     where: {
       userId: currentId,
     },
+    orderBy: [
+      {
+        completed: 'asc',
+      },
+      {
+        createdAt: 'asc',
+      },
+    ],
   });
 
   return NextResponse.json(tasks, { status: 200 });

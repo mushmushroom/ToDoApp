@@ -46,6 +46,7 @@ export async function createTask(title: string) {
     });
 
     if (!response.ok) throw new Error('Failed to fetch a task');
+    toast.success('The task has been added.');
     return await response.json();
   } catch (error) {
     toast.error((error as Error).message);
@@ -58,10 +59,11 @@ export async function updateTask(id: string, data: Partial<{ title: string; comp
     const response = await fetch(`${API_URL}/tasks/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data }),
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) throw new Error('Failed to fetch a task');
+    toast.success('The task has been updated.');
     return await response.json();
   } catch (error) {
     toast.error((error as Error).message);
@@ -76,6 +78,7 @@ export async function deleteTask(id: string) {
     });
 
     if (!response.ok) throw new Error('Failed to fetch a task');
+    toast.success('The task has been deleted.');
     return await response.json();
   } catch (error) {
     toast.error((error as Error).message);

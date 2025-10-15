@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/input-group';
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { CHAR_LIMIT } from '@/lib/constants';
 
 interface FormFieldProps {
   placeholder: string;
@@ -20,6 +21,7 @@ interface FormFieldProps {
   isPasswordField?: boolean;
   hasLabelHidden?: boolean;
   className?: string;
+  watch?: (name: string) => unknown[];
 }
 
 export default function FormField({
@@ -32,8 +34,10 @@ export default function FormField({
   isPasswordField,
   hasLabelHidden,
   className,
+  watch,
 }: FormFieldProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   return isPasswordField ? (
     <div className={`flex flex-col gap-2 ${className ?? ''}`}>
       <Label className={hasLabelHidden ? 'sr-only' : ''} htmlFor={id}>
@@ -70,11 +74,18 @@ export default function FormField({
         {label}
       </Label>
       <Input type={type} placeholder={placeholder} id={id} {...registration} />
-      {errors && (
-        <p role="alert" className="text-xs text-red-600">
-          {errors.message}
-        </p>
-      )}
+      <div className="flex gap-3 ">
+        {errors && (
+          <p role="alert" className="text-xs text-red-600 ">
+            {errors.message}
+          </p>
+        )}
+        {watch ? (
+          <span className="text-xs text-gray-500 ml-auto whitespace-nowrap">
+            {(watch && watch(id)?.length) || 0} / {CHAR_LIMIT}
+          </span>
+        ) : null}
+      </div>
     </div>
   );
 }
