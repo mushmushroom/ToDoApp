@@ -6,6 +6,7 @@ import { useReCaptcha } from 'react-enterprise-recaptcha';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { AppPath } from '../links';
 
 const registerSchema = z
   .object({
@@ -100,14 +101,14 @@ export default function useAuth() {
       redirect: false,
       email,
       password,
-      callbackUrl: '/my-tasks',
+      callbackUrl: AppPath.MyTasks,
     });
     if (result?.error) {
       toast.error('Invalid credentials');
     } else {
       toast.success('Logged in successfully! Loading your tasks...');
       resetSignIn();
-      router.push('/my-tasks');
+      router.push(AppPath.MyTasks);
     }
   }
 

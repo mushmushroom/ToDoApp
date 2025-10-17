@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { AppPath } from '@/lib/links';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -15,7 +16,7 @@ export default function NotFound() {
       </p>
 
       <Button asChild className="mt-2 px-6 py-2 text-base font-semibold">
-        <Link href="/">← Back to Home</Link>
+        <Link href={ AppPath.Home}>← Back to Home</Link>
       </Button>
     </main>
   );

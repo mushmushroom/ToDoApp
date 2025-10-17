@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import RegisterForm from '@/components/auth/RegisterForm';
+import { AppPath } from '@/lib/links';
 
 export default function RegisterPage() {
   return (
@@ -12,11 +13,11 @@ export default function RegisterPage() {
       <div className="flex gap-1 items-center text-sm justify-center ">
         <span>Already have an account?</span>
         <Button variant="link" className="text-primary" asChild>
-          <Link href="/auth/sign-in">Log in here</Link>
+          <Link href={AppPath.SignIn}>Log in here</Link>
         </Button>
       </div>
       <Button asChild variant="ghost">
-        <Link href="/">Back to home page</Link>
+        <Link href={AppPath.Home}>Back to home page</Link>
       </Button>
     </section>
   );

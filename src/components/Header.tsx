@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { NavigationMenu, NavigationMenuLink } from './ui/navigation-menu';
 // import { useSession } from 'next-auth/react';
 import LogoutButton from './LogoutButton';
-import { headerLinks } from '@/lib/links';
+import { AppPath, headerLinks } from '@/lib/links';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
 import { Button } from './ui/button';
 import { FaBars } from 'react-icons/fa';
@@ -21,7 +21,7 @@ export default function Header() {
           {/* Left links */}
           <div className="flex gap-3 items-center">
             <NavigationMenuLink asChild className="text-xl">
-              <Link href="/">Home / Logo</Link>
+              <Link href={AppPath.Home}>Home / Logo</Link>
             </NavigationMenuLink>
             {headerLinks.rightLinks.map((link) => (
               <NavigationMenuLink asChild key={link.href} className="text-xl">
@@ -44,7 +44,7 @@ export default function Header() {
 
       {/* Mobile menu */}
       <div className="md:hidden text-xl py-3 flex justify-between items-center">
-        <Link href="/" className="text-lg">
+        <Link href={AppPath.Home} className="text-lg">
           Home / Logo
         </Link>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>

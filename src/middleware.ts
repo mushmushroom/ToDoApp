@@ -1,19 +1,38 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
+import { AppPath } from './lib/links';
+
+const isAuthTokenPresent = (req: NextRequest) => {
+  const token =
+    req.cookies.get('next-auth.session-token')?.value ||
+    req.cookies.get('__Secure-next-auth.session-token')?.value ||
+    req.cookies.get('authjs.session-token')?.value;
+  return Boolean(token);
+};
 
 export function middleware(req: NextRequest) {
-  const isAuthTokenPresent = (req: NextRequest): boolean =>
-    !!req.cookies.get('next-auth.session-token')?.value ||
-    !!req.cookies.get('__Secure-next-auth.session-token')?.value;
+  const { pathname } = req.nextUrl;
+  const isAuthenticated = isAuthTokenPresent(req);
 
-  if (!isAuthTokenPresent) {
-    const signInUrl = new URL('/auth/sign-in', req.url);
-    return NextResponse.redirect(signInUrl);
+  // Redirect unauthenticated users from protected routes
+  if (!isAuthenticated && [AppPath.MyTasks, AppPath.Settings].some((p) => pathname.startsWith(p))) {
+    return NextResponse.redirect(new URL(AppPath.SignIn, req.url));
+  }
+
+  // Redirect authenticated users away from sign-in/register pages
+  if (isAuthenticated && [AppPath.SignIn, AppPath.Register].some((p) => pathname === p)) {
+    return NextResponse.redirect(new URL(AppPath.MyTasks, req.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/my-tasks/:path*', '/settings/:path*'],
+  matcher: [
+    AppPath.Home,
+    AppPath.SignIn,
+    AppPath.Register,
+    AppPath.MyTasks,
+    `${AppPath.MyTasks}/:path*`,
+    `${AppPath.Settings}/:path*`,
+  ],
 };

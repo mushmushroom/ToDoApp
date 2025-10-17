@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { auth } from '@/lib/config/auth';
+import { AppPath } from '@/lib/links';
 
 export default async function Home() {
   const data = await auth();
@@ -19,17 +20,17 @@ export default async function Home() {
           </p>
           {data?.user ? (
             <Button asChild>
-              <Link href="/my-tasks">Go to my tasks</Link>
+              <Link href={AppPath.MyTasks}>Go to my tasks</Link>
             </Button>
           ) : (
             <div className="flex gap-3 items-center justify-center md:justify-start">
               <Button asChild className="px-6 py-3">
-                <Link href="/auth/sign-in">Log in</Link>
+                <Link href={AppPath.SignIn}>Log in</Link>
               </Button>
               <div>
                 or view
                 <Button variant="link" asChild>
-                  <Link href="/demo">Live Demo</Link>
+                  <Link href={AppPath.Demo}>Live Demo</Link>
                 </Button>
               </div>
             </div>

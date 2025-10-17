@@ -1,3 +1,4 @@
+import { AppPath } from '@/lib/links';
 import { Button } from '../ui/button';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -8,13 +9,13 @@ export default function LoginWithGoogle() {
   const router = useRouter();
 
   async function handleGoogleLogin() {
-    const result = await signIn('google', { redirect: false, callbackUrl: '/my-tasks' });
+    const result = await signIn('google', { redirect: false, callbackUrl: AppPath.MyTasks });
 
     if (result?.error) {
       toast.error(result.error);
     } else {
       toast.success('Logged in successfully!');
-      router.push(result?.url || '/my-tasks');
+      router.push(result?.url || AppPath.MyTasks);
     }
   }
   return (

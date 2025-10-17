@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';
 import Link from 'next/link';
+import { AppPath } from '@/lib/links';
 
 export default function Error({
   error,
@@ -32,7 +33,7 @@ export default function Error({
           Try again
         </Button>
         <Button asChild>
-          <Link href="/">← Back to Home</Link>
+          <Link href={ AppPath.Home}>← Back to Home</Link>
         </Button>
       </div>
     </main>

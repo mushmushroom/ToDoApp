@@ -5,6 +5,7 @@ import Link from 'next/link';
 import LoginWithGoogle from '@/components/auth/LoginWithGoogle';
 import LoginForm from '@/components/auth/LoginForm';
 import { Separator } from '@/components/ui/separator';
+import { AppPath } from '@/lib/links';
 
 export default function SignInPage() {
   return (
@@ -22,7 +23,7 @@ export default function SignInPage() {
         </Button>
       </div>
       <Button asChild variant="ghost">
-        <Link href="/">Back to home page</Link>
+        <Link href={ AppPath.Home}>Back to home page</Link>
       </Button>
     </section>
   );
