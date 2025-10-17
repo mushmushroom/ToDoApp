@@ -28,11 +28,12 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    AppPath.Home,
-    AppPath.SignIn,
-    AppPath.Register,
-    AppPath.MyTasks,
-    `${AppPath.MyTasks}/:path*`,
-    `${AppPath.Settings}/:path*`,
+    '/', // AppPath.Home
+    '/auth/sign-in', // AppPath.SignIn
+    '/auth/register', // AppPath.Register
+    '/my-tasks', // AppPath.MyTasks
+    '/my-tasks/:path*',
+    '/settings',
+    '/settings/:path*',
   ],
 };
