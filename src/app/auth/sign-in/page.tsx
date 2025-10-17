@@ -21,6 +21,9 @@ export default function SignInPage() {
           <Link href="/auth/register">Click here to create one!</Link>
         </Button>
       </div>
+      <Button asChild variant="ghost">
+        <Link href="/">Back to home page</Link>
+      </Button>
     </section>
   );
 }

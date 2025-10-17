@@ -15,6 +15,9 @@ export default function RegisterPage() {
           <Link href="/auth/sign-in">Log in here</Link>
         </Button>
       </div>
+      <Button asChild variant="ghost">
+        <Link href="/">Back to home page</Link>
+      </Button>
     </section>
   );
 }
