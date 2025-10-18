@@ -8,6 +8,7 @@ import { AppPath, headerLinks } from '@/lib/links';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
 import { Button } from './ui/button';
 import { FaBars } from 'react-icons/fa';
+import Image from 'next/image';
 
 export default function Header() {
   // const { data: session } = useSession();
@@ -21,7 +22,9 @@ export default function Header() {
           {/* Left links */}
           <div className="flex gap-3 items-center">
             <NavigationMenuLink asChild className="text-xl">
-              <Link href={AppPath.Home}>Home / Logo</Link>
+              <Link href={AppPath.Home}>
+                <Image src="/cover.png" alt="Logo img" width={120} height={60} />
+              </Link>
             </NavigationMenuLink>
             {headerLinks.rightLinks.map((link) => (
               <NavigationMenuLink asChild key={link.href} className="text-xl">
@@ -45,7 +48,7 @@ export default function Header() {
       {/* Mobile menu */}
       <div className="md:hidden text-xl py-3 flex justify-between items-center">
         <Link href={AppPath.Home} className="text-lg">
-          Home / Logo
+          <Image src="/cover.png" alt="Logo img" width={120} height={60} />
         </Link>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetHeader className="sr-only">
