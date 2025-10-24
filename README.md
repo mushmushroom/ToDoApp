@@ -1,15 +1,17 @@
 # TaskFlow
-To Do List Application
+A clean and simple way to organize your day.
  
 !! logo to add
 
 ## Description
 
-This is a simple to-do list application that allows you to manage all your tasks in one place.
-You can create, adjust and delete tasks, as well as mark the completed ones.
+This is a minimal to-do list application designed to keep your daily life organized.
+Easily create, edit, complete, and delete your tasks — all in one intuitive interface.
+
+Whether you sign up or just try the demo, TaskFlow helps you stay on top of your goals without distractions.
 
 ## Link
-The application is available at [http://LINK](http://LINK)
+Visit [TaskFlow](http://LINK)
 
 ## Tech Stack
 
@@ -23,19 +25,25 @@ The project is built using the following frameworks and libraries
 - Prisma
 
 ## Features
-Registered users and users using demo version are able to:
+Both registered users and demo users can:
 - Create new tasks
 - Edit existing tasks
 - Mark tasks as completed
 - Delete tasks
 
-To make the tasks persisent and tied to a user's account, you can create a new account with an email account or log in using Github or Google account.
+Registered users also get:
+- Persistent storage linked to their account
+- Secure login via Email, GitHub, or Google
+- Option to change their password
 
-Registered users are able to change a password.
-
-## Planned features
-- Pagination for task list
+## Coming soon
+- Task list pagination
 - Reset forgotten password
+- Task filters
+- Task categories
+- Option to change email
+- Option to delete all completed tasks
+- Dark theme
 
 ## How to run this project
 
