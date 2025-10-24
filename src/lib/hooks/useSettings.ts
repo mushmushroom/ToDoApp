@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 const changePasswordSchema = z
   .object({
-    oldPassword: z.string(),
+    oldPassword: z.string().min(1, 'Old password is required'),
     newPassword: z.string().min(8, 'Password should contain at least 8 characters'),
     confirmPassword: z.string(),
   })
@@ -31,7 +31,7 @@ export default function useSettings() {
     mode: 'onChange',
   });
 
-  async function changePassword(oldPassword: string, newPassword: string) {
+  async function changePassword({ oldPassword, newPassword }: ChangePasswordInputs) {
     try {
       const response = await fetch('/api/change-password', {
         method: 'POST',
@@ -40,10 +40,11 @@ export default function useSettings() {
       });
       if (!response.ok) {
         const data = await response.json();
-        toast.error(data.error || 'Failed to register');
+        toast.error(data.error || 'Failed to update the password');
         return;
       }
-      toast('The password has been updated successfully');
+      resetChangePass();
+      toast('The password was updated successfully');
     } catch (error) {
       console.log((error as Error).message);
       toast.error('Something went wrong. Try again later.');

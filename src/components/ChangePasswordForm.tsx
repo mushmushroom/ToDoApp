@@ -23,7 +23,7 @@ export default function ChangePasswordForm() {
           type="password"
           label="Old password"
           errors={errorsChangePass.oldPassword}
-          registration={registerChangePass('oldPassword', { required: true })}
+          registration={registerChangePass('oldPassword', { required: "Required field" })}
           isPasswordField
         />
         <FormField
