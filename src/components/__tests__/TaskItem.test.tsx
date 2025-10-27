@@ -7,12 +7,22 @@ jest.mock('@/lib/hooks/useTasks', () => ({
   useDeleteTask: jest.fn(),
 }));
 
-jest.mock('../TaskDialog.tsx', () => () => <div data-testid="task-dialog">TaskDialog</div>);
-jest.mock('../DeleteDialog.tsx', () => (props: { onConfirm: () => void }) => (
-  <button data-testid="delete-dialog" onClick={() => props.onConfirm()}>
-    DeleteDialog
-  </button>
-));
+jest.mock('../TaskDialog.tsx', () => {
+  const MockTaskDialog = () => <div data-testid="task-dialog">TaskDialog</div>;
+  MockTaskDialog.displayName = 'MockTaskDialog';
+  return MockTaskDialog;
+});
+
+jest.mock('../DeleteDialog.tsx', () => {
+  const MockDeleteDialog = (props: { onConfirm: () => void }) => (
+    <button data-testid="delete-dialog" onClick={() => props.onConfirm()}>
+      DeleteDialog
+    </button>
+  );
+  MockDeleteDialog.displayName = 'MockDeleteDialog';
+  return MockDeleteDialog;
+});
+
 describe('TaskItem Component', () => {
   const mockUpdate = { mutate: jest.fn() };
   const mockDelete = { mutate: jest.fn() };

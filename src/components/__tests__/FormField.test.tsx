@@ -6,7 +6,6 @@ import { CHAR_LIMIT } from '@/lib/constants';
 function WrapperTextField() {
   const {
     register,
-    formState: { errors },
   } = useForm({
     defaultValues: {
       name: '',
@@ -47,7 +46,6 @@ function WrapperFieldHiddenLabel() {
 function WrapperPasswordField() {
   const {
     register,
-    formState: { errors },
   } = useForm({
     defaultValues: {
       password: '',

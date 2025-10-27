@@ -59,8 +59,6 @@ describe('TaskDialog Component', () => {
   });
 
   it('Correct text is displayed on the submit button when form is being submitted', async () => {
-    const user = userEvent.setup();
-
     render(<TaskDialog mode="add" onSubmit={onSubmit} />);
     const addButton = screen.getByRole('button', { name: /add new task/i });
     fireEvent.click(addButton);

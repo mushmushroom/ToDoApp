@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Delete } from 'lucide-react';
 import DeleteDialog from '../DeleteDialog';
 
 describe('DeleteDialog Component', () => {

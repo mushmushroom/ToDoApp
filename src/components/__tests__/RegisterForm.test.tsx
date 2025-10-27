@@ -2,9 +2,13 @@ import useAuth from '@/lib/hooks/useAuth';
 import { render, screen } from '@testing-library/react';
 import RegisterForm from '../auth/RegisterForm';
 
-jest.mock('../custom/FormField.tsx', () => (props: { type: string }) => (
-  <input type={props.type} data-testid="form-field" />
-));
+jest.mock('../custom/FormField.tsx', () => {
+  const MockFormField = (props: { type: string }) => (
+    <input type={props.type} data-testid="form-field" />
+  );
+  MockFormField.displayName = 'MockFormField';
+  return MockFormField;
+});
 
 jest.mock('@/lib/hooks/useAuth');
 

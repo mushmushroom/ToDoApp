@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 
 const changePasswordSchema = z
   .object({
@@ -19,8 +18,6 @@ const changePasswordSchema = z
 type ChangePasswordInputs = z.infer<typeof changePasswordSchema>;
 
 export default function useSettings() {
-  const router = useRouter();
-
   const {
     register: registerChangePass,
     handleSubmit: handleSubmitChangePass,
