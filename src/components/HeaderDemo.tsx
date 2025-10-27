@@ -53,18 +53,12 @@ export default function HeaderDemo() {
             <NavigationMenu className="flex-col  max-w-full w-full h-full py-9 px-3 justify-start gap-3">
               {headerLinks.rightLinks.map((link) => (
                 <NavigationMenuLink asChild key={link.href} className="text-xl">
-                  <Link href={link.href} onClick={() => setIsOpen(false)}>
-                    {link.text}
-                  </Link>
+                  <span>{link.text}</span>
                 </NavigationMenuLink>
               ))}
-              {headerLinks.leftLinks.map((link) => (
-                <NavigationMenuLink asChild key={link.href} className="text-xl">
-                  <Link href={link.href} onClick={() => setIsOpen(false)}>
-                    {link.text}
-                  </Link>
-                </NavigationMenuLink>
-              ))}
+              <div>
+                <p className="text-blue-500">Demo version</p>
+              </div>
             </NavigationMenu>
           </SheetContent>
         </Sheet>

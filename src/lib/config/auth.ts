@@ -1,4 +1,5 @@
-import NextAuth, { AuthError } from 'next-auth';
+import NextAuth, { AuthError, Session } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@auth/prisma-adapter';
@@ -6,14 +7,21 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import prisma from './prisma';
-// import { saltAndHashPassword } from '@/lib/helper';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: { strategy: 'jwt' },
   callbacks: {
-    async session({ session, token }) {
+    async jwt({ token, user }) {
+      if (user) {
+        token.isDemo = (user as any).isDemo ?? false;
+      }
+      return token;
+    },
+
+    async session({ session, token }: { session: Session; token: JWT }) {
       if (token.sub) {
         session.user.id = token.sub;
+        session.user.isDemo = token.isDemo ?? false;
       }
       return session;
     },
@@ -41,7 +49,36 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!credentials || !credentials.email || !credentials.password) {
           return null;
         }
+
         const email = credentials.email as string;
+
+        if (email.startsWith('demo-')) {
+          let demoUser = await prisma.user.findUnique({
+            where: {
+              email,
+            },
+          });
+
+          if (!demoUser) {
+            demoUser = await prisma.user.create({
+              data: {
+                email,
+                name: 'Demo User',
+                isDemo: true,
+                password: await bcrypt.hash('demo', 10),
+              },
+            });
+
+            await prisma.tasks.createMany({
+              data: [
+                { title: 'Welcome to your demo account!', userId: demoUser.id },
+                { title: 'This is your first task.', userId: demoUser.id },
+                { title: 'Feel free to explore the app.', userId: demoUser.id },
+              ],
+            });
+          }
+          return demoUser;
+        }
 
         const user = await prisma.user.findUnique({
           where: {
@@ -58,7 +95,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!isValid) {
           throw new Error('Invalid password');
         }
-        return { id: user.id, name: user.name, email: user.email };
+        return { id: user.id, name: user.name, email: user.email, isDemo: user.isDemo };
       },
     }),
   ],
