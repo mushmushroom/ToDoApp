@@ -15,14 +15,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.isDemo = (user as any).isDemo ?? false;
       }
+      
       return token;
     },
 
     async session({ session, token }: { session: Session; token: JWT }) {
-      if (token.sub) {
-        session.user.id = token.sub;
-        session.user.isDemo = token.isDemo ?? false;
+      if (!session?.user) return session;
+
+      session.user.id = token.sub ?? '';
+      session.user.isDemo = token.isDemo ?? false;
+
+      if (token.isDemo) {
+        const demoUserExists = await prisma.user.findUnique({
+          where: { id: token.sub ?? '' },
+          select: { id: true },
+        });
+        if (!demoUserExists) {
+          session.user.isDemo = false;
+        }
       }
+
       return session;
     },
   },

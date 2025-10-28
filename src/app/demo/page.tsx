@@ -1,6 +1,6 @@
 'use client';
 import HeaderDemo from '@/components/HeaderDemo';
-import { signIn } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,9 +12,18 @@ import { AppPath } from '@/lib/links';
 export default function DemoPage() {
   const { data: session, status, update } = useSession();
   const [isCreatingSession, setIsCreatingSession] = useState(false);
+  console.log(session, status);
 
   useEffect(() => {
-    if (status === 'unauthenticated' && !isCreatingSession) {
+    // if (status === 'authenticated' && session?.user && !session.user.isDemo) {
+    //   signOut({ redirect: false });
+    // }
+
+    if (
+      (status === 'unauthenticated' ||
+        (session?.user.isDemo === false && session?.user.id?.startsWith('demo-'))) &&
+      !isCreatingSession
+    ) {
       setIsCreatingSession(true);
 
       signIn('credentials', {
@@ -26,9 +35,7 @@ export default function DemoPage() {
           console.error('Demo sign in failed:', result.error);
           setIsCreatingSession(false);
         } else if (result?.ok) {
-          update().then(() => {
-            setIsCreatingSession(false);
-          });
+          update().finally(() => setIsCreatingSession(false));
         }
       });
     }
@@ -43,6 +50,7 @@ export default function DemoPage() {
   }
 
   if (!session?.user) {
+    // if demo user was deleted
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p>Initializing...</p>
@@ -50,7 +58,7 @@ export default function DemoPage() {
     );
   }
 
-  if (status === 'authenticated' && session?.user && !session.user.isDemo) {
+  if (status === 'authenticated' && session.user && !session.user.isDemo) {
     return (
       <div className="flex flex-col gap-4 items-center justify-center min-h-screen">
         <p>You are already signed in with a regular account.</p>
@@ -61,6 +69,7 @@ export default function DemoPage() {
     );
   }
 
+  // demo session created
   return (
     <>
       <HeaderDemo />
