@@ -28,10 +28,10 @@ export default async function Home() {
                 <Link href={AppPath.SignIn}>Log in</Link>
               </Button>
               <div>
-                or view
+                {/* or view
                 <Button variant="link" asChild>
                   <Link href={AppPath.Demo}>Live Demo</Link>
-                </Button>
+                </Button> */}
               </div>
             </div>
           )}
