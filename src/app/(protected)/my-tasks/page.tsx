@@ -3,12 +3,13 @@ import TaskDialog from '@/components/TaskDialog';
 import TaskItem from '@/components/TaskItem';
 import { useAllTasks, useCreateTask } from '@/lib/hooks/useTasks';
 
+
 export default function MyTasks() {
   const { data: tasks, isLoading, isError } = useAllTasks();
   const createTask = useCreateTask();
 
   if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error...</p>
+  if (isError) return <p>Error...</p>;
   return (
     <section className="py-3">
       <TaskDialog mode="add" onSubmit={(title) => createTask.mutate(title)} />
