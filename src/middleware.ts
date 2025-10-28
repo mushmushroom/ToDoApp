@@ -3,9 +3,10 @@ import { AppPath } from './lib/links';
 
 const isAuthTokenPresent = (req: NextRequest) => {
   const token =
+    req.cookies.get('authjs.session-token')?.value ||
+    req.cookies.get('__Secure-authjs.session-token')?.value ||
     req.cookies.get('next-auth.session-token')?.value ||
-    req.cookies.get('__Secure-next-auth.session-token')?.value ||
-    req.cookies.get('authjs.session-token')?.value;
+    req.cookies.get('__Secure-next-auth.session-token')?.value;
   return Boolean(token);
 };
 
