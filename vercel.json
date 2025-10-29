@@ -1,0 +1,6 @@
+{
+  "crons": [{
+    "path": "/api/clean-demo-sessions",
+    "schedule": "5 * * * *"
+  }]
+}

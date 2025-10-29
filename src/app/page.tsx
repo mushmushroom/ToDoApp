@@ -5,7 +5,9 @@ import { auth } from '@/lib/config/auth';
 import { AppPath } from '@/lib/links';
 
 export default async function Home() {
-  const data = await auth();
+  const session = await auth();
+  const isAuthenticated = session?.user && !session.user.isDemo;
+
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4">
       <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-16 max-w-6xl w-full">
@@ -18,7 +20,7 @@ export default async function Home() {
             Stay focused and productive with a simple, powerful to-do list that helps you plan
             tasks, track progress, and reach your goals — all in one place.
           </p>
-          {data?.user ? (
+          {isAuthenticated ? (
             <Button asChild>
               <Link href={AppPath.MyTasks}>Go to my tasks</Link>
             </Button>
@@ -28,10 +30,10 @@ export default async function Home() {
                 <Link href={AppPath.SignIn}>Log in</Link>
               </Button>
               <div>
-                {/* or view
+                or view
                 <Button variant="link" asChild>
                   <Link href={AppPath.Demo}>Live Demo</Link>
-                </Button> */}
+                </Button>
               </div>
             </div>
           )}

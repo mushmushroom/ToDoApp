@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createTask, deleteTask, fetchTask, fetchTasks, updateTask } from '../utils';
-import { Task } from '../types';
+import { Task } from '../types/types';
 
 export function useAllTasks() {
   return useQuery<Task[]>({ queryKey: ['tasks'], queryFn: fetchTasks });
