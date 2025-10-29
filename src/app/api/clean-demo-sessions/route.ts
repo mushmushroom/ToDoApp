@@ -32,6 +32,6 @@ export async function GET(req: Request) {
       message: `No demo users found to delete.`,
     });
   } catch (error) {
-    return NextResponse.json({ error: 'Error cleaning demo sessions.' }, { status: 500 });
+    return NextResponse.json({ error: `Error cleaning demo sessions: ${error}` }, { status: 500 });
   }
 }

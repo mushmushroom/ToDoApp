@@ -3,6 +3,7 @@ import { JWT } from 'next-auth/jwt';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@auth/prisma-adapter';
+import { AdapterUser } from 'next-auth/adapters';
 
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
@@ -13,7 +14,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.isDemo = (user as any).isDemo ?? false;
+        token.isDemo = (user as AdapterUser & { isDemo?: boolean }).isDemo ?? false;
       }
 
       return token;
