@@ -1,6 +1,6 @@
 'use client';
 import HeaderDemo from '@/components/HeaderDemo';
-import { signIn, signOut } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,13 +12,8 @@ import { AppPath } from '@/lib/links';
 export default function DemoPage() {
   const { data: session, status, update } = useSession();
   const [isCreatingSession, setIsCreatingSession] = useState(false);
-  console.log(session, status);
 
   useEffect(() => {
-    // if (status === 'authenticated' && session?.user && !session.user.isDemo) {
-    //   signOut({ redirect: false });
-    // }
-
     if (
       (status === 'unauthenticated' ||
         (session?.user.isDemo === false && session?.user.id?.startsWith('demo-'))) &&
@@ -50,7 +45,6 @@ export default function DemoPage() {
   }
 
   if (!session?.user) {
-    // if demo user was deleted
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p>Initializing...</p>
@@ -74,6 +68,12 @@ export default function DemoPage() {
     <>
       <HeaderDemo />
       <main className="py-3 px-1 max-w-6xl justify-start m-auto">
+        <Button variant="ghost" asChild className="mb-4">
+          <Link href={AppPath.Home}>&larr; Back to home page</Link>
+        </Button>
+        <div role="note" className="mb-4 bg-yellow-400 p-5 rounded-md flex items-center gap-2">
+          <span>Demo account — tasks are temporary and reset every 24 hours.</span>
+        </div>
         <MyTasks />
       </main>
     </>
