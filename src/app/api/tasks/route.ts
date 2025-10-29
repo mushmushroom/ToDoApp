@@ -21,6 +21,7 @@ export async function GET() {
       {
         createdAt: 'asc',
       },
+      { id: 'asc' },
     ],
   });
 

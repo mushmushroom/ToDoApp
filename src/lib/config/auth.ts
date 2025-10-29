@@ -15,7 +15,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.isDemo = (user as any).isDemo ?? false;
       }
-      
+
       return token;
     },
 
@@ -25,14 +25,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.id = token.sub ?? '';
       session.user.isDemo = token.isDemo ?? false;
 
-      if (token.isDemo) {
-        const demoUserExists = await prisma.user.findUnique({
-          where: { id: token.sub ?? '' },
-          select: { id: true },
-        });
-        if (!demoUserExists) {
-          session.user.isDemo = false;
-        }
+      const existingUser = await prisma.user.findUnique({
+        where: { id: token.sub ?? '' },
+        select: { id: true },
+      });
+
+      if (!existingUser) {
+        return null as unknown as Session;
       }
 
       return session;
