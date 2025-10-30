@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -36,7 +36,7 @@ interface TaskDialogProps {
   onSubmit: (title: string) => void;
 }
 
-export default function TaskDialog({ mode, defaultTitle, onSubmit }: TaskDialogProps) {
+const TaskDialog = ({ mode, defaultTitle, onSubmit }: TaskDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const {
@@ -121,4 +121,6 @@ export default function TaskDialog({ mode, defaultTitle, onSubmit }: TaskDialogP
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default memo(TaskDialog);

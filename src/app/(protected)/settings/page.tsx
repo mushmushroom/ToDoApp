@@ -8,7 +8,6 @@ import { useSession } from 'next-auth/react';
 export default function AccountPage() {
   const { data: session } = useSession();
   const { data, isLoading } = useProvider();
-  // console.log(data);
 
   if (isLoading) return <p>loading the data</p>;
   return (

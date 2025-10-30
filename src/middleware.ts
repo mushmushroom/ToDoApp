@@ -68,10 +68,17 @@ export async function middleware(req: NextRequest) {
     const response = NextResponse.redirect(new URL(pathname, req.url));
 
     // Clear all possible session cookies
-    response.cookies.delete('authjs.session-token');
-    response.cookies.delete('__Secure-authjs.session-token');
-    response.cookies.delete('next-auth.session-token');
-    response.cookies.delete('__Secure-next-auth.session-token');
+    const cookieOptions = {
+      path: '/',
+      secure: true,
+      httpOnly: true,
+      sameSite: 'lax' as const,
+    };
+
+    response.cookies.set('authjs.session-token', '', { ...cookieOptions, maxAge: 0 });
+    response.cookies.set('__Secure-authjs.session-token', '', { ...cookieOptions, maxAge: 0 });
+    response.cookies.set('next-auth.session-token', '', { ...cookieOptions, maxAge: 0 });
+    response.cookies.set('__Secure-next-auth.session-token', '', { ...cookieOptions, maxAge: 0 });
 
     return response;
   }
