@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import LogoutButton from '../LogoutButton';
+import LogoutButton from '../header/LogoutButton';
 import { toast } from 'sonner';
 import { signOut } from 'next-auth/react';
 

@@ -1,6 +1,6 @@
 'use client';
-import ChangePasswordForm from '@/components/ChangePasswordForm';
-import LinkedAccounts from '@/components/LinkedAccounts';
+import ChangePasswordForm from '@/components/settings/ChangePasswordForm';
+import LinkedAccounts from '@/components/settings/LinkedAccounts';
 import { Separator } from '@/components/ui/separator';
 import useProvider from '@/lib/hooks/useProvider';
 import { useSession } from 'next-auth/react';

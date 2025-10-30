@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import DeleteDialog from '../DeleteDialog';
+import DeleteDialog from '../tasks/DeleteDialog';
 
 describe('DeleteDialog Component', () => {
   const onConfirm = jest.fn();

@@ -1,5 +1,4 @@
 'use client';
-import HeaderDemo from '@/components/HeaderDemo';
 import { signIn } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -8,6 +7,7 @@ import MyTasks from '../(protected)/my-tasks/page';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { AppPath } from '@/lib/links';
+import HeaderDemo from '@/components/header/HeaderDemo';
 
 export default function DemoPage() {
   const { data: session, status, update } = useSession();

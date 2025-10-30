@@ -1,4 +1,4 @@
-import TaskDialog from '../TaskDialog';
+import TaskDialog from '../tasks/TaskDialog';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 

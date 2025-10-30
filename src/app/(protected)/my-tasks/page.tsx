@@ -1,8 +1,7 @@
 'use client';
-import TaskDialog from '@/components/TaskDialog';
-import TaskItem from '@/components/TaskItem';
+import TaskDialog from '@/components/tasks/TaskDialog';
+import TaskItem from '@/components/tasks/TaskItem';
 import { useAllTasks, useCreateTask } from '@/lib/hooks/useTasks';
-
 
 export default function MyTasks() {
   const { data: tasks, isLoading, isError } = useAllTasks();

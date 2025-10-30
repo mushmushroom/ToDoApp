@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import TaskItem from '../TaskItem';
+import TaskItem from '../tasks/TaskItem';
 import { useDeleteTask, useUpdateTask } from '@/lib/hooks/useTasks';
 
 jest.mock('@/lib/hooks/useTasks', () => ({
@@ -7,13 +7,13 @@ jest.mock('@/lib/hooks/useTasks', () => ({
   useDeleteTask: jest.fn(),
 }));
 
-jest.mock('../TaskDialog.tsx', () => {
+jest.mock('../tasks/TaskDialog.tsx', () => {
   const MockTaskDialog = () => <div data-testid="task-dialog">TaskDialog</div>;
   MockTaskDialog.displayName = 'MockTaskDialog';
   return MockTaskDialog;
 });
 
-jest.mock('../DeleteDialog.tsx', () => {
+jest.mock('../tasks/DeleteDialog.tsx', () => {
   const MockDeleteDialog = (props: { onConfirm: () => void }) => (
     <button data-testid="delete-dialog" onClick={() => props.onConfirm()}>
       DeleteDialog
