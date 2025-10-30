@@ -1,11 +1,11 @@
 'use client';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
-import { NavigationMenu, NavigationMenuLink } from './ui/navigation-menu';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet';
+import { NavigationMenu, NavigationMenuLink } from '../ui/navigation-menu';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { AppPath, headerLinks } from '@/lib/links';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { FaBars } from 'react-icons/fa';
 
 export default function HeaderDemo() {
