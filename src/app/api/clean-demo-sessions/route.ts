@@ -2,10 +2,19 @@ import prisma from '@/lib/config/prisma';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {
-  if (req.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
-  return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 });
+  const authHeader = req.headers.get('Authorization');
+  const url = new URL(req.url);
+  const secretFromQuery = url.searchParams.get('secret');
+
+  const isAuthorized =
+    authHeader === `Bearer ${process.env.CRON_SECRET}` ||
+    secretFromQuery === process.env.CRON_SECRET ||
+    process.env.VERCEL === '1';
+
+  if (!isAuthorized) {
+    return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 });
   }
-  
+
   try {
     const demoUsers = await prisma.user.findMany({
       where: { isDemo: true },
