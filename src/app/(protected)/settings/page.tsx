@@ -1,15 +1,30 @@
 'use client';
 import ChangePasswordForm from '@/components/settings/ChangePasswordForm';
 import LinkedAccounts from '@/components/settings/LinkedAccounts';
+import ErrorMessage from '@/components/status/ErrorMessage';
 import { Separator } from '@/components/ui/separator';
+import { Spinner } from '@/components/ui/spinner';
 import useProvider from '@/lib/hooks/useProvider';
 import { useSession } from 'next-auth/react';
+import { FaSpinner } from 'react-icons/fa';
 
 export default function AccountPage() {
   const { data: session } = useSession();
-  const { data, isLoading } = useProvider();
+  const { data, isLoading, isError, refetch } = useProvider();
 
-  if (isLoading) return <p>loading the data</p>;
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center gap-2 p-3">
+        <Spinner />
+        Loading account data...
+      </div>
+    );
+
+  if (isError) { 
+    return (
+      <ErrorMessage title="Error loading account data" onRetry={refetch}/>
+    )
+  }
   return (
     <div>
       <div className="py-8">
