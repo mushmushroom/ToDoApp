@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { NavigationMenu, NavigationMenuLink } from '../ui/navigation-menu';
-// import { useSession } from 'next-auth/react';
 import LogoutButton from './LogoutButton';
 import { AppPath, headerLinks } from '@/lib/links';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet';
@@ -11,7 +10,6 @@ import { FaBars } from 'react-icons/fa';
 import Image from 'next/image';
 
 export default function Header() {
-  // const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
