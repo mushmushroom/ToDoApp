@@ -1,6 +1,6 @@
 import useSettings from '@/lib/hooks/useSettings';
-import FormField from './custom/FormField';
-import { Button } from './ui/button';
+import FormField from '../custom/FormField';
+import { Button } from '../ui/button';
 
 export default function ChangePasswordForm() {
   const {
@@ -23,7 +23,7 @@ export default function ChangePasswordForm() {
           type="password"
           label="Old password"
           errors={errorsChangePass.oldPassword}
-          registration={registerChangePass('oldPassword', { required: "Required field" })}
+          registration={registerChangePass('oldPassword', { required: 'Required field' })}
           isPasswordField
         />
         <FormField

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Header from '../Header';
+import Header from '../header/Header';
 import { headerLinks } from '@/lib/links';
 
 jest.mock('next-auth/react', () => ({

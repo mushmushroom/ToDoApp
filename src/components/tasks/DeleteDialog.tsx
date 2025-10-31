@@ -9,14 +9,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from './ui/alert-dialog';
-import { Button } from './ui/button';
+} from '../ui/alert-dialog';
+import { Button } from '../ui/button';
+import { memo } from 'react';
 
 interface DeleteDialogProps {
   onConfirm: () => void;
   title: string;
 }
-export default function DeleteDialog({ onConfirm, title }: DeleteDialogProps) {
+const DeleteDialog = ({ onConfirm, title }: DeleteDialogProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -44,4 +45,6 @@ export default function DeleteDialog({ onConfirm, title }: DeleteDialogProps) {
       </AlertDialogContent>
     </AlertDialog>
   );
-}
+};
+
+export default memo(DeleteDialog);

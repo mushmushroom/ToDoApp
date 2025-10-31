@@ -1,7 +1,6 @@
-# TaskFlow
+![App logo](/public/logo/vector/default-monochrome-white.svg)
+
 A clean and simple way to organize your day.
- 
-!! logo to add
 
 ## Description
 
@@ -11,11 +10,13 @@ Easily create, edit, complete, and delete your tasks — all in one intuitive in
 Whether you sign up or just try the demo, TaskFlow helps you stay on top of your goals without distractions.
 
 ## Link
-Visit [TaskFlow](http://LINK)
+
+Visit [TaskFlow](https://to-do-app-xi-jade.vercel.app/)
 
 ## Tech Stack
 
 The project is built using the following frameworks and libraries
+
 - NextJS
 - Next Auth
 - Tanstack Query
@@ -25,18 +26,22 @@ The project is built using the following frameworks and libraries
 - Prisma
 
 ## Features
+
 Both registered users and demo users can:
+
 - Create new tasks
 - Edit existing tasks
 - Mark tasks as completed
 - Delete tasks
 
 Registered users also get:
+
 - Persistent storage linked to their account
 - Secure login via Email, GitHub, or Google
 - Option to change their password
 
 ## Coming soon
+
 - Task list pagination
 - Reset forgotten password
 - Task filters
@@ -60,4 +65,3 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-

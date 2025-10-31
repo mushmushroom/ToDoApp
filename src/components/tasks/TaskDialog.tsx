@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -9,13 +9,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './ui/dialog';
-import { Button } from './ui/button';
+} from '../ui/dialog';
+import { Button } from '../ui/button';
 import { FaEdit } from 'react-icons/fa';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import FormField from './custom/FormField';
+import FormField from '../custom/FormField';
 import { CHAR_LIMIT } from '@/lib/constants';
 
 const taskTitleSchema = z.object({
@@ -36,7 +36,7 @@ interface TaskDialogProps {
   onSubmit: (title: string) => void;
 }
 
-export default function TaskDialog({ mode, defaultTitle, onSubmit }: TaskDialogProps) {
+const TaskDialog = ({ mode, defaultTitle, onSubmit }: TaskDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const {
@@ -121,4 +121,6 @@ export default function TaskDialog({ mode, defaultTitle, onSubmit }: TaskDialogP
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default memo(TaskDialog);

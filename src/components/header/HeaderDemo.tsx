@@ -1,17 +1,14 @@
 'use client';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet';
+import { NavigationMenu, NavigationMenuLink } from '../ui/navigation-menu';
 import Link from 'next/link';
-import React, { useState } from 'react';
-import { NavigationMenu, NavigationMenuLink } from './ui/navigation-menu';
-// import { useSession } from 'next-auth/react';
-import LogoutButton from './LogoutButton';
-import { AppPath, headerLinks } from '@/lib/links';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
-import { Button } from './ui/button';
-import { FaBars } from 'react-icons/fa';
 import Image from 'next/image';
+import { useState } from 'react';
+import { AppPath, headerLinks } from '@/lib/links';
+import { Button } from '../ui/button';
+import { FaBars } from 'react-icons/fa';
 
-export default function Header() {
-  // const { data: session } = useSession();
+export default function HeaderDemo() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -28,19 +25,12 @@ export default function Header() {
             </NavigationMenuLink>
             {headerLinks.rightLinks.map((link) => (
               <NavigationMenuLink asChild key={link.href} className="text-xl">
-                <Link href={link.href}>{link.text}</Link>
+                <span>{link.text}</span>
               </NavigationMenuLink>
             ))}
           </div>
-          {/* Right links */}
-          <div className="flex gap-3 items-center">
-            {headerLinks.leftLinks.map((link) => (
-              <NavigationMenuLink asChild key={link.href} className="text-xl">
-                <Link href={link.href}>{link.text}</Link>
-              </NavigationMenuLink>
-            ))}
-
-            <LogoutButton />
+          <div>
+            <p className="text-blue-500">Demo version</p>
           </div>
         </div>
       </NavigationMenu>
@@ -63,19 +53,12 @@ export default function Header() {
             <NavigationMenu className="flex-col  max-w-full w-full h-full py-9 px-3 justify-start gap-3">
               {headerLinks.rightLinks.map((link) => (
                 <NavigationMenuLink asChild key={link.href} className="text-xl">
-                  <Link href={link.href} onClick={() => setIsOpen(false)}>
-                    {link.text}
-                  </Link>
+                  <span>{link.text}</span>
                 </NavigationMenuLink>
               ))}
-              {headerLinks.leftLinks.map((link) => (
-                <NavigationMenuLink asChild key={link.href} className="text-xl">
-                  <Link href={link.href} onClick={() => setIsOpen(false)}>
-                    {link.text}
-                  </Link>
-                </NavigationMenuLink>
-              ))}
-              <LogoutButton />
+              <div>
+                <p className="text-blue-500">Demo version</p>
+              </div>
             </NavigationMenu>
           </SheetContent>
         </Sheet>
