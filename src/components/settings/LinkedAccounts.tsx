@@ -4,12 +4,14 @@ type LinkedAccountsProps = {
   providers: string[];
 };
 
+const AVAILABLE_PROVIDERS = [
+  { id: 'google', name: 'Google', icon: <FaGoogle size={28} /> },
+  { id: 'github', name: 'GitHub', icon: <FaGithub size={28} /> },
+];
+
 export default function LinkedAccounts({ providers }: LinkedAccountsProps) {
-  const availableProviders = [
-    { id: 'google', name: 'Google', icon: <FaGoogle size={28} /> },
-    { id: 'github', name: 'GitHub', icon: <FaGithub size={28} /> },
-  ];
-  const linkedProviders = availableProviders.filter((p) => providers.includes(p.id));
+  
+  const linkedProviders = AVAILABLE_PROVIDERS.filter((p) => providers.includes(p.id));
 
   if (linkedProviders.length === 0) return null;
 

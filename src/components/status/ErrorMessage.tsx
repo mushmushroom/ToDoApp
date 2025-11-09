@@ -3,15 +3,17 @@ import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { AlertTriangle } from 'lucide-react';
 import { Button } from '../ui/button';
 
+interface ErrorMessageProps {
+  title?: string;
+  description?: string;
+  onRetry?: () => void;
+}
+
 export default function ErrorMessage({
   title = 'Something went wrong',
   description = 'An unexpected error occurred. Please try again later.',
   onRetry,
-}: {
-  title?: string;
-  description?: string;
-  onRetry?: () => void;
-}) {
+}: ErrorMessageProps) {
   return (
     <div className="w-full flex mt-8">
       <Alert variant="destructive" className="max-w-md">
