@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
+import { API_URL } from '../constants';
 
 const changePasswordSchema = z
   .object({
@@ -30,7 +31,7 @@ export default function useSettings() {
 
   async function changePassword({ oldPassword, newPassword }: ChangePasswordInputs) {
     try {
-      const response = await fetch('/api/change-password', {
+      const response = await fetch(`${API_URL}/api/change-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ oldPassword, newPassword }),
@@ -41,7 +42,7 @@ export default function useSettings() {
         return;
       }
       resetChangePass();
-      toast('The password was updated successfully');
+      toast.success('The password was updated successfully');
     } catch (error) {
       console.log((error as Error).message);
       toast.error('Something went wrong. Try again later.');

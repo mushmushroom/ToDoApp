@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { AppPath } from '../links';
+import { API_URL } from '../constants';
 
 const registerSchema = z
   .object({
@@ -38,7 +39,7 @@ export default function useAuth() {
     onSuccess?: () => void
   ) {
     try {
-      const response = await fetch('/api/register', {
+      const response = await fetch(`${API_URL}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, captchaToken }),
@@ -48,7 +49,7 @@ export default function useAuth() {
         toast.error(data.error || 'Failed to register');
         return;
       }
-      toast('Success! You will be redirected to the login page now.');
+      toast.success('Success! You will be redirected to the login page now.');
       if (onSuccess) {
         onSuccess();
         router.push('/auth/sign-in');
