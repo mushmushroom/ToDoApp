@@ -29,7 +29,7 @@ describe('useSettings hook', () => {
     });
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
-        `${API_URL}/api/change-password`,
+        `${API_URL}/change-password`,
         expect.objectContaining({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -55,7 +55,7 @@ describe('useSettings hook', () => {
     });
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
-        `${API_URL}/api/change-password`,
+        `${API_URL}/change-password`,
         expect.objectContaining({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

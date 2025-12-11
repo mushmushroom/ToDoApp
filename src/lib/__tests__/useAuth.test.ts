@@ -58,7 +58,7 @@ describe('useAuth hook', () => {
 
       await waitFor(() => {
         expect(fetch).toHaveBeenCalledWith(
-          `${API_URL}/api/register`,
+          `${API_URL}/register`,
           expect.objectContaining({
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

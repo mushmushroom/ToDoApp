@@ -31,7 +31,7 @@ export default function useSettings() {
 
   async function changePassword({ oldPassword, newPassword }: ChangePasswordInputs) {
     try {
-      const response = await fetch(`${API_URL}/api/change-password`, {
+      const response = await fetch(`${API_URL}/change-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ oldPassword, newPassword }),
