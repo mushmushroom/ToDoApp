@@ -26,7 +26,7 @@ export default function LoginForm() {
         registration={registerSignIn('password', { required: true })}
         isPasswordField
       />
-      <Button className="cursor-pointer" disabled={isSignInSubmitting}>
+      <Button className="cursor-pointer" disabled={isSignInSubmitting} type="submit">
         {isSignInSubmitting ? 'Processing...' : 'Log in'}
       </Button>
     </form>

@@ -28,5 +28,27 @@ describe('User registration and login', () => {
     cy.get('input[name="confirmPassword"]').type('password123');
     cy.get('button[type=submit]').click();
     cy.contains('User already exists.');
-  })
+  });
+
+  it('Invalid credentials throw error on login', () => {
+    cy.visit('/auth/sign-in');
+    cy.get('input[name="email"]').type('test@example.com');
+    cy.get('input[name="password"]').type('password123');
+    cy.get('button[type=submit]').click();
+    cy.contains('Invalid credentials');
+  });
+
+  it('Successful login and redirect to /my-tasks', () => {
+    cy.task('deleteUser', 'test123@example.com');
+    cy.task('createUser', {
+      email: 'test123@example.com',
+      password: '12345678',
+    });
+    cy.visit('/auth/sign-in');
+    cy.get('input[name="email"]').type('test123@example.com');
+    cy.get('input[name="password"]').type('12345678');
+    cy.get('button[type=submit]').click();
+    cy.contains('Logged in successfully! Loading your tasks...');
+    cy.location('pathname').should('eq', '/my-tasks');
+  });
 });
