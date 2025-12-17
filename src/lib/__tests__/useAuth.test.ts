@@ -40,7 +40,7 @@ describe('useAuth hook', () => {
   });
 
   describe('Registration flow', () => {
-    it('Calls /api/register and redirects on success', async () => {
+    it('Calls /register and redirects on success', async () => {
       (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => ({}),
@@ -58,7 +58,7 @@ describe('useAuth hook', () => {
 
       await waitFor(() => {
         expect(fetch).toHaveBeenCalledWith(
-          `${API_URL}/api/register`,
+          `${API_URL}/register`,
           expect.objectContaining({
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
