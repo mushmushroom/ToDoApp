@@ -1,5 +1,5 @@
 import prisma from '@/lib/config/prisma';
-import { API_URL } from './src/lib/constants'
+import { API_URL, CHAR_LIMIT } from './src/lib/constants'
 
 import bcrypt from 'bcryptjs';
 import { defineConfig } from 'cypress';
@@ -48,6 +48,7 @@ export default defineConfig({
     env: {
       API_E2E_URL: API_URL,
       COOKIE_NAME: 'next-auth.session-token',
+      CHAR_LIMIT: CHAR_LIMIT
     },
   },
 });
