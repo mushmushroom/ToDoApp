@@ -1,4 +1,5 @@
 'use client';
+import CategoriesSection from '@/components/categories/CategoriesSection';
 import ErrorMessage from '@/components/status/ErrorMessage';
 import LoadingTasks from '@/components/status/LoadingTasks';
 import TaskDialog from '@/components/tasks/TaskDialog';
@@ -12,6 +13,7 @@ export default function MyTasks() {
   return (
     <section className="py-3">
       <TaskDialog mode="add" onSubmit={(title) => createTask.mutate(title)} />
+      <CategoriesSection />
       <div className="py-7 flex flex-col gap-3">
         {isLoading ? (
           <LoadingTasks />
