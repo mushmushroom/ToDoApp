@@ -1,4 +1,4 @@
-describe('Home page', () => {
+describe('Add task flow', () => {
   beforeEach(() => {
     cy.task('deleteUser', 'test123@example.com');
     cy.task('createUser', {
