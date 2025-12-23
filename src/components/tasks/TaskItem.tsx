@@ -15,15 +15,22 @@ const TaskItem = ({ id, title, completed }: TaskItemProps) => {
 
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center gap-5 justify-between p-3 rounded-md border bg-white hover:shadow-sm transition">
-      <div className="flex items-center gap-3">
-        <input
-          type="checkbox"
-          checked={completed}
-          onChange={() => updateTask.mutate({ id, data: { completed: !completed } })}
-          className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-400 cursor-pointer shrink-0"
-        />
-        <span className={`text-base ${completed ? 'line-through text-gray-400' : 'text-gray-800'}`}>
-          {title}
+      <div>
+        <div className="flex items-center gap-3 mb-3">
+          <input
+            type="checkbox"
+            checked={completed}
+            onChange={() => updateTask.mutate({ id, data: { completed: !completed } })}
+            className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-400 cursor-pointer shrink-0"
+          />
+          <span
+            className={`text-base ${completed ? 'line-through text-gray-400' : 'text-gray-800'}`}
+          >
+            {title}
+          </span>
+        </div>
+        <span className="inline-flex items-center rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
+          Test category
         </span>
       </div>
 
