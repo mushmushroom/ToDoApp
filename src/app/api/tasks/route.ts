@@ -14,6 +14,9 @@ export async function GET() {
     where: {
       userId: currentId,
     },
+    include: {
+      categories: true,
+    },
     orderBy: [
       {
         completed: 'asc',

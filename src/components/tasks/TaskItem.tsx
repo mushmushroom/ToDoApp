@@ -7,9 +7,10 @@ interface TaskItemProps {
   id: string;
   title: string;
   completed: boolean;
+  category: string;
 }
 
-const TaskItem = ({ id, title, completed }: TaskItemProps) => {
+const TaskItem = ({ id, title, completed, category }: TaskItemProps) => {
   const updateTask = useUpdateTask();
   const deleteTask = useDeleteTask();
 
@@ -30,7 +31,7 @@ const TaskItem = ({ id, title, completed }: TaskItemProps) => {
           </span>
         </div>
         <span className="inline-flex items-center rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-          Test category
+          {category || 'No category assigned'}
         </span>
       </div>
 
