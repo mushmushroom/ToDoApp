@@ -9,12 +9,7 @@ import { useAllTasks, useCreateTask } from '@/lib/hooks/useTasks';
 export default function MyTasks() {
   const { data: tasks, isLoading, isError, refetch } = useAllTasks();
   const createTask = useCreateTask();
-  console.log(
-    'Tasks with categories:',
-    tasks?.map((task) => ({
-      categoryName: task.categories,
-    }))
-  );
+  console.log('Tasks with categories:', tasks);
 
   return (
     <section className="py-3">

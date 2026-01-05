@@ -1,3 +1,4 @@
+import { Category } from '@/lib/types/types';
 import {
   Select,
   SelectTrigger,
@@ -8,7 +9,14 @@ import {
   SelectLabel,
 } from '../ui/select';
 
-export default function CategoriesSelect() {
+interface CategoriesSelectProps {
+  categories: Category[] | undefined;
+}
+export default function CategoriesSelect({ categories }: CategoriesSelectProps) {
+  if (!categories) {
+    return null;
+  }
+
   return (
     <Select>
       <SelectTrigger className="w-[180px]">
@@ -17,11 +25,11 @@ export default function CategoriesSelect() {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Categories</SelectLabel>
-          <SelectItem value="apple">Uncategorized</SelectItem>
-          <SelectItem value="banana">Banana</SelectItem>
-          <SelectItem value="blueberry">Blueberry</SelectItem>
-          <SelectItem value="grapes">Grapes</SelectItem>
-          <SelectItem value="pineapple">Pineapple</SelectItem>
+          {categories.map((category) => (
+            <SelectItem key={category.id} value={category.name}>
+              {category.name}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>

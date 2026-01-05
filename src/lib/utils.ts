@@ -77,3 +77,14 @@ export async function deleteTask(id: string) {
     throw error;
   }
 }
+
+export async function fetchCategories() {
+  try {
+    const response = await fetch(`${API_URL}/category`);
+    if (!response.ok) throw new Error('Failed to fetch categories');
+    return await response.json();
+  } catch (error) {
+    toast.error((error as Error).message);
+    throw error;
+  }
+}
