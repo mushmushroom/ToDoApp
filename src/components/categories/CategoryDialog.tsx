@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import FormField from '../custom/FormField';
 import { CHAR_LIMIT } from '@/lib/constants';
+import useGetCategories from '@/lib/hooks/useCategories';
 
 const categoryTitleSchema = z.object({
   categoryTitle: z
@@ -34,6 +35,7 @@ interface CategoryDialogProps {
 
 const CategoryDialog = ({ defaultTitle, onSubmit }: CategoryDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  
 
   const {
     register,

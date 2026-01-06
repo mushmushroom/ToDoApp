@@ -9,11 +9,13 @@ import { useAllTasks, useCreateTask } from '@/lib/hooks/useTasks';
 export default function MyTasks() {
   const { data: tasks, isLoading, isError, refetch } = useAllTasks();
   const createTask = useCreateTask();
-  console.log('Tasks with categories:', tasks);
 
   return (
     <section className="py-3">
-      <TaskDialog mode="add" onSubmit={(title) => createTask.mutate(title)} />
+      <TaskDialog
+        mode="add"
+        onSubmit={(title, categoryId) => createTask.mutate({ title, categoryId })}
+      />
       <CategoriesSection />
       <div className="py-7 flex flex-col gap-3">
         {isLoading ? (
@@ -24,10 +26,7 @@ export default function MyTasks() {
           tasks.map((task) => (
             <TaskItem
               key={task.id}
-              id={task.id}
-              completed={task.completed}
-              title={task.title}
-              category={task.categories?.name}
+              task={task}
             />
           ))
         ) : (

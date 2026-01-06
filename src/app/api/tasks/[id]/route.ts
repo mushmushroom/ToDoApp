@@ -17,6 +17,9 @@ export async function GET(_req: NextRequest, context: { params: Promise<{ id: st
       userId: currentId,
       id: id,
     },
+    include: {
+      categories: true,
+    },
   });
 
   if (!task) return NextResponse.json({ error: 'Not found' }, { status: 404 });
@@ -35,7 +38,7 @@ export async function PATCH(request: NextRequest, context: { params: Promise<{ i
   const { id: taskId } = await context.params;
 
   const body = await request.json();
-  const { title, completed } = body;
+  const { title, completed, categoryId } = body;
 
   const existingTask = await prisma.tasks.findFirst({
     where: {
@@ -53,6 +56,7 @@ export async function PATCH(request: NextRequest, context: { params: Promise<{ i
     data: {
       title: title ?? existingTask.title,
       completed: completed ?? existingTask.completed,
+      categories: categoryId === null ? { disconnect: true } : { connect: { id: categoryId } },
     },
   });
 

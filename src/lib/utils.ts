@@ -29,12 +29,17 @@ export async function fetchTask(id: string) {
   }
 }
 
-export async function createTask(title: string) {
+type CreateTaskInput = {
+  title: string;
+  categoryId: string | null;
+};
+
+export async function createTask({ title, categoryId }: CreateTaskInput) {
   try {
     const response = await fetch(`${API_URL}/tasks`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title }),
+      body: JSON.stringify({ title, categoryId }),
     });
 
     if (!response.ok) throw new Error('Failed to fetch a task');
@@ -46,7 +51,11 @@ export async function createTask(title: string) {
   }
 }
 
-export async function updateTask(id: string, data: Partial<{ title: string; completed: boolean }>) {
+export async function updateTask(
+  id: string,
+  data: Partial<{ title: string; completed: boolean; categoryId: string | null }>
+) {
+  console.log(data);
   try {
     const response = await fetch(`${API_URL}/tasks/${id}`, {
       method: 'PATCH',
@@ -54,7 +63,7 @@ export async function updateTask(id: string, data: Partial<{ title: string; comp
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) throw new Error('Failed to create a task');
+    if (!response.ok) throw new Error('Failed to update a task');
     toast.success('The task has been updated.');
     return await response.json();
   } catch (error) {

@@ -5,10 +5,12 @@ export interface Task {
   categories: {
     id: string;
     name: string;
-  };
+  } | null;
 }
 
 export interface Category {
   id: string;
   name: string;
 }
+
+

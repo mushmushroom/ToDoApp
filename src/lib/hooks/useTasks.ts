@@ -26,7 +26,7 @@ export function useUpdateTask() {
       data,
     }: {
       id: string;
-      data: Partial<{ title: string; completed: boolean }>;
+      data: Partial<{ title: string; completed: boolean, categoryId: string | null }>;
     }) => updateTask(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tasks'] }),
   });
