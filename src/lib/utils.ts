@@ -54,7 +54,7 @@ export async function updateTask(id: string, data: Partial<{ title: string; comp
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) throw new Error('Failed to fetch a task');
+    if (!response.ok) throw new Error('Failed to create a task');
     toast.success('The task has been updated.');
     return await response.json();
   } catch (error) {
@@ -82,6 +82,23 @@ export async function fetchCategories() {
   try {
     const response = await fetch(`${API_URL}/category`);
     if (!response.ok) throw new Error('Failed to fetch categories');
+    return await response.json();
+  } catch (error) {
+    toast.error((error as Error).message);
+    throw error;
+  }
+}
+
+export async function createCategory(name: string) {
+  try {
+    const response = await fetch(`${API_URL}/category`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name }),
+    });
+
+    if (!response.ok) throw new Error('Failed to create a category');
+    toast.success('The category has been added.');
     return await response.json();
   } catch (error) {
     toast.error((error as Error).message);
