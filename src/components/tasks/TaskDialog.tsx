@@ -122,6 +122,7 @@ const TaskDialog = ({ mode, defaultTitle, defaultCategoryId, onSubmit }: TaskDia
                 categories={categories ?? []}
                 value={field.value ?? 'none'}
                 onChange={field.onChange}
+                allowAll={false}
               />
             )}
           />

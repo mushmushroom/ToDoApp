@@ -56,7 +56,7 @@ export async function PATCH(request: NextRequest, context: { params: Promise<{ i
     data: {
       title: title ?? existingTask.title,
       completed: completed ?? existingTask.completed,
-      categories: categoryId === null ? { disconnect: true } : { connect: { id: categoryId } },
+      categories: categoryId === 'none' ? { disconnect: true } : { connect: { id: categoryId } },
     },
   });
 

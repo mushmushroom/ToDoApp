@@ -7,9 +7,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export async function fetchTasks() {
+export async function fetchTasks(categoryId?: string) {
   try {
-    const response = await fetch(`${API_URL}/tasks`);
+    const response = await fetch(
+      `${API_URL}/tasks${categoryId && categoryId !== 'all' ? `?category=${categoryId}` : ''}`
+    );
     if (!response.ok) throw new Error('Failed to fetch tasks');
     return await response.json();
   } catch (error) {
