@@ -116,3 +116,44 @@ export async function createCategory(name: string) {
     throw error;
   }
 }
+
+export async function updateCategory(
+  id: string,
+  data: {name: string}
+) {
+  try {
+    const response = await fetch(`${API_URL}/category/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) throw new Error('Failed to update a category');
+    toast.success('The category has been updated.');
+    return await response.json();
+  } catch (error) {
+    toast.error((error as Error).message);
+    throw error;
+  }
+}
+
+export async function deleteCategory(id: string, options: { deleteTasks: boolean }) {
+  try {
+    const params = new URLSearchParams();
+
+    if (options.deleteTasks) {
+      params.set('deleteTasks', 'true');
+    }
+
+    const response = await fetch(`${API_URL}/category/${id}?${params.toString()}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) throw new Error('Failed to delete a category');
+    toast.success(`The category ${options.deleteTasks ? "and all associated tasks have" : "has"} been deleted.`);
+    return await response.json();
+  } catch (error) {
+    toast.error((error as Error).message);
+    throw error;
+  }
+}

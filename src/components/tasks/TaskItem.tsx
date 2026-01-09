@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import TaskDialog from './TaskDialog';
 import { useDeleteTask, useUpdateTask } from '@/lib/hooks/useTasks';
-import DeleteDialog from './DeleteDialog';
+import DeleteDialog from '../common/DeleteDialog';
 import { Task } from '@/lib/types/types';
 
 interface TaskItemProps {
@@ -50,7 +50,7 @@ const TaskItem = ({ task }: TaskItemProps) => {
             updateTask.mutate({ id: task.id, data: { title, categoryId } })
           }
         />
-        <DeleteDialog title={task.title} onConfirm={() => deleteTask.mutate(task.id)} />
+        <DeleteDialog type="task" title={task.title} onConfirm={() => deleteTask.mutate(task.id)} />
       </div>
     </div>
   );

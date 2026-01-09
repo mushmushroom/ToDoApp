@@ -13,4 +13,6 @@ export interface Category {
   name: string;
 }
 
+export type DialogMode = 'add' | 'edit';
+
 

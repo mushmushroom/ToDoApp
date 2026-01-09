@@ -14,9 +14,10 @@ import { Button } from '../ui/button';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import FormField from '../custom/FormField';
+import FormField from '../common/FormField';
 import { CHAR_LIMIT } from '@/lib/constants';
-import useGetCategories from '@/lib/hooks/useCategories';
+import { DialogMode } from '@/lib/types/types';
+import { FaEdit } from 'react-icons/fa';
 
 const categoryTitleSchema = z.object({
   categoryTitle: z
@@ -29,13 +30,13 @@ const categoryTitleSchema = z.object({
 type categoryTitleInput = z.infer<typeof categoryTitleSchema>;
 
 interface CategoryDialogProps {
+  mode: DialogMode;
   defaultTitle?: string;
   onSubmit: (title: string) => void;
 }
 
-const CategoryDialog = ({ defaultTitle, onSubmit }: CategoryDialogProps) => {
+const CategoryDialog = ({ mode, defaultTitle, onSubmit }: CategoryDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  
 
   const {
     register,
@@ -55,7 +56,13 @@ const CategoryDialog = ({ defaultTitle, onSubmit }: CategoryDialogProps) => {
 
   async function handleFormSubmit(data: categoryTitleInput) {
     const newTitle = data.categoryTitle.trim();
-    // const oldTitle = (defaultTitle ?? '').trim();
+    const oldTitle = (defaultTitle ?? '').trim();
+
+    // Don’t send request if nothing changed
+    if (mode === 'edit' && newTitle === oldTitle) {
+      setIsOpen(false);
+      return;
+    }
 
     onSubmit(newTitle);
     reset();
@@ -65,13 +72,27 @@ const CategoryDialog = ({ defaultTitle, onSubmit }: CategoryDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="default">Create category</Button>
+        {mode === 'add' ? (
+          <Button variant="default">Add new category</Button>
+        ) : (
+          <Button
+            variant="ghost"
+            className="p-2 text-gray-700 border rounded hover:bg-gray-50 cursor-pointer"
+            title="Edit a category"
+          >
+            <FaEdit />
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>Add category</DialogTitle>
-          <DialogDescription>Enter the name of the new category below.</DialogDescription>
+          <DialogTitle>{mode === 'add' ? 'Add a new category' : 'Edit this category'}</DialogTitle>
+          <DialogDescription>
+            {mode === 'add'
+              ? 'Enter the name of the new category below.'
+              : 'Update the name of the category.'}
+          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col gap-4">
@@ -92,7 +113,7 @@ const CategoryDialog = ({ defaultTitle, onSubmit }: CategoryDialogProps) => {
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Creating...' : 'Create'}
+              {isSubmitting ? 'Saving...' : 'Save'}
             </Button>
           </DialogFooter>
         </form>

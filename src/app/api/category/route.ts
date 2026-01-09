@@ -14,6 +14,9 @@ export async function GET() {
     where: {
       userId: currentId,
     },
+    orderBy: {
+      createdAt: 'asc',
+    },
   });
 
   return NextResponse.json(categories, { status: 200 });

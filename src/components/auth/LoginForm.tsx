@@ -1,5 +1,5 @@
 'use client';
-import FormField from '../custom/FormField';
+import FormField from '../common/FormField';
 import { Button } from '../ui/button';
 
 import useAuth from '@/lib/hooks/useAuth';

@@ -15,10 +15,11 @@ import { FaEdit } from 'react-icons/fa';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import FormField from '../custom/FormField';
+import FormField from '../common/FormField';
 import { CHAR_LIMIT } from '@/lib/constants';
 import CategoriesSelect from '../categories/CategoriesSelect';
 import useGetCategories from '@/lib/hooks/useCategories';
+import { DialogMode } from '@/lib/types/types';
 
 const taskTitleSchema = z.object({
   taskTitle: z
@@ -31,10 +32,8 @@ const taskTitleSchema = z.object({
 
 type TaskTitleInput = z.infer<typeof taskTitleSchema>;
 
-type Mode = 'add' | 'edit';
-
 interface TaskDialogProps {
-  mode: Mode;
+  mode: DialogMode;
   defaultTitle?: string;
   defaultCategoryId?: string | null;
   onSubmit: (title: string, categoryId: string | null) => void;
