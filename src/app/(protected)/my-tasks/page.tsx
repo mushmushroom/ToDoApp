@@ -21,6 +21,7 @@ export default function MyTasks() {
 
   return (
     <section className="py-3">
+      <h1 className="text-center text-2xl mb-5 font-bold">My tasks</h1>
       <TaskDialog
         mode="add"
         onSubmit={(title, categoryId) => createTask.mutate({ title, categoryId })}

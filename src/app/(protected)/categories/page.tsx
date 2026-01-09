@@ -13,6 +13,7 @@ export default function MyCategories() {
   const { data: categories, isLoading, isError, refetch } = useGetCategories();
   return (
     <section className="py-3">
+      <h1 className="text-center text-2xl mb-5 font-bold">My categories</h1>
       <div className="flex items-center gap-3">
         <CategoryDialog mode="add" onSubmit={(title) => createCategory.mutate(title)} />
         <Button variant="outline" asChild>
