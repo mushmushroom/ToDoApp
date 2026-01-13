@@ -17,7 +17,7 @@ import { useForm } from 'react-hook-form';
 import FormField from '../common/FormField';
 import { CHAR_LIMIT } from '@/lib/constants';
 import { DialogMode } from '@/lib/types/types';
-import { FaEdit } from 'react-icons/fa';
+import EditButton from '../common/EditButton';
 
 const categoryTitleSchema = z.object({
   categoryTitle: z
@@ -75,13 +75,7 @@ const CategoryDialog = ({ mode, defaultTitle, onSubmit }: CategoryDialogProps) =
         {mode === 'add' ? (
           <Button variant="default">Add new category</Button>
         ) : (
-          <Button
-            variant="ghost"
-            className="p-2 text-gray-700 border rounded hover:bg-gray-50 cursor-pointer"
-            title="Edit a category"
-          >
-            <FaEdit />
-          </Button>
+          <EditButton title="Edit a category" />
         )}
       </DialogTrigger>
 

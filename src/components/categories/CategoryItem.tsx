@@ -3,6 +3,7 @@ import { Category } from '@/lib/types/types';
 import CategoryDialog from './CategoryDialog';
 import DeleteDialog from '../common/DeleteDialog';
 import { useDeleteCategory, useUpdateCategory } from '@/lib/hooks/useCategories';
+import { itemStyles } from '@/lib/sharedStyles';
 
 interface CategoryItemProps {
   category: Category;
@@ -12,12 +13,12 @@ const CategoryItem = ({ category }: CategoryItemProps) => {
   const updateCategory = useUpdateCategory();
   const deleteCategory = useDeleteCategory();
   return (
-    <div className="flex flex-col md:flex-row items-start md:items-center gap-5 justify-between p-3 rounded-md border bg-white hover:shadow-sm transition">
+    <div className={itemStyles.outerDivStyles}>
       <div>
-        <div className="flex items-center gap-3">{category.name}</div>
+        <div className={itemStyles.titleText}>{category.name}</div>
       </div>
 
-      <div className="flex items-center gap-2 self-end md:self-center">
+      <div className={itemStyles.buttonOuterDiv}>
         <CategoryDialog
           mode="edit"
           defaultTitle={category.name}

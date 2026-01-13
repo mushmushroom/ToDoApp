@@ -3,6 +3,7 @@ import TaskDialog from './TaskDialog';
 import { useDeleteTask, useUpdateTask } from '@/lib/hooks/useTasks';
 import DeleteDialog from '../common/DeleteDialog';
 import { Task } from '@/lib/types/types';
+import { itemStyles } from '@/lib/sharedStyles';
 
 interface TaskItemProps {
   task: Task;
@@ -13,9 +14,11 @@ const TaskItem = ({ task }: TaskItemProps) => {
   const deleteTask = useDeleteTask();
 
   return (
-    <div className="flex flex-col md:flex-row items-start md:items-center gap-5 justify-between p-3 rounded-md border bg-white hover:shadow-sm transition">
+    <div
+      className={`${itemStyles.outerDivStyles}   `}
+    >
       <div>
-        <div className="flex items-center gap-3 mb-3">
+        <div className={`${itemStyles.titleText} mb-3`}>
           <input
             type="checkbox"
             checked={task.completed}
@@ -41,7 +44,7 @@ const TaskItem = ({ task }: TaskItemProps) => {
         </span>
       </div>
 
-      <div className="flex items-center gap-2 self-end md:self-center">
+      <div className={itemStyles.buttonOuterDiv}>
         <TaskDialog
           mode="edit"
           defaultTitle={task.title}

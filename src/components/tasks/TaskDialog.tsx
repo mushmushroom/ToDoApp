@@ -20,6 +20,7 @@ import { CHAR_LIMIT } from '@/lib/constants';
 import CategoriesSelect from '../categories/CategoriesSelect';
 import useGetCategories from '@/lib/hooks/useCategories';
 import { DialogMode } from '@/lib/types/types';
+import EditButton from '../common/EditButton';
 
 const taskTitleSchema = z.object({
   taskTitle: z
@@ -81,13 +82,7 @@ const TaskDialog = ({ mode, defaultTitle, defaultCategoryId, onSubmit }: TaskDia
         {mode === 'add' ? (
           <Button variant="default">Add new task</Button>
         ) : (
-          <Button
-            variant="ghost"
-            className="p-2 text-gray-700 border rounded hover:bg-gray-50 cursor-pointer"
-            title="Edit a task"
-          >
-            <FaEdit />
-          </Button>
+         <EditButton title="Edit a task" />
         )}
       </DialogTrigger>
 
