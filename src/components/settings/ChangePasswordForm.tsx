@@ -44,7 +44,7 @@ export default function ChangePasswordForm() {
           errors={errorsChangePass.confirmPassword}
           isPasswordField
         />
-        <Button className="cursor-pointer" disabled={isChangePassSubmitting}>
+        <Button className="cursor-pointer" disabled={isChangePassSubmitting} type="submit">
           {isChangePassSubmitting ? 'Processing...' : 'Change password'}
         </Button>
       </form>

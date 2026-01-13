@@ -40,6 +40,7 @@
 declare namespace Cypress {
   interface Chainable {
     login(email: string, password: string): Chainable<void>;
+    logout(): Chainable<void>;
   }
 }
 
@@ -62,4 +63,14 @@ Cypress.Commands.add('login', (email: string, password: string) => {
       },
     });
   });
+});
+
+Cypress.Commands.add('logout', () => {
+  cy.clearCookie('authjs.session-token');
+  cy.clearCookie('__Secure-authjs.session-token');
+  // cy.request({
+  //   method: 'POST',
+  //   url: '/api/auth/signout',
+  //   followRedirect: true,
+  // });
 });
