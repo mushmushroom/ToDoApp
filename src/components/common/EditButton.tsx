@@ -1,18 +1,28 @@
-import React from 'react'
+import React from 'react';
 import { Button } from '../ui/button';
 import { FaEdit } from 'react-icons/fa';
 
-interface EditButtonProps {
+interface EditButtonProps extends React.ComponentPropsWithoutRef<typeof Button> {
   title: string;
 }
-export default function EditButton({title}: EditButtonProps) {
-  return (
-    <Button
-      variant="ghost"
-      className="p-2 text-gray-700 border rounded hover:bg-gray-50 cursor-pointer"
-      title={title}
-    >
-      <FaEdit />
-    </Button>
-  );
-}
+
+const EditButton = React.forwardRef<HTMLButtonElement, EditButtonProps>(
+  ({ title, ...props }, ref) => {
+    return (
+      <Button
+        ref={ref}
+        type="button"
+        variant="ghost"
+        title={title}
+        className="p-2 text-gray-700 border rounded hover:bg-gray-50 cursor-pointer"
+        {...props}
+      >
+        <FaEdit />
+      </Button>
+    );
+  }
+);
+
+EditButton.displayName = 'EditButton';
+
+export default EditButton;

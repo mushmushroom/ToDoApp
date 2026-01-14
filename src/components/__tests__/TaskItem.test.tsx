@@ -1,6 +1,22 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import TaskItem from '../tasks/TaskItem';
 import { useDeleteTask, useUpdateTask } from '@/lib/hooks/useTasks';
+import { Task } from '@/lib/types/types';
+
+const testTaskUnCompleted: Task = {
+  id: '1',
+  title: 'Test Task',
+  completed: false,
+  categories: {
+    id: '1',
+    name: 'Work',
+  },
+};
+
+const testTaskCompleted: Task = {
+  ...testTaskUnCompleted,
+  completed: true,
+};
 
 jest.mock('@/lib/hooks/useTasks', () => ({
   useUpdateTask: jest.fn(),
@@ -13,7 +29,7 @@ jest.mock('../tasks/TaskDialog.tsx', () => {
   return MockTaskDialog;
 });
 
-jest.mock('../tasks/DeleteDialog.tsx', () => {
+jest.mock('../common/DeleteDialog.tsx', () => {
   const MockDeleteDialog = (props: { onConfirm: () => void }) => (
     <button data-testid="delete-dialog" onClick={() => props.onConfirm()}>
       DeleteDialog
@@ -39,7 +55,7 @@ describe('TaskItem Component', () => {
   });
 
   it('renders task item with correct title and completion status', () => {
-    render(<TaskItem id="1" title="Test Task" completed={false} />);
+    render(<TaskItem task={testTaskUnCompleted} />);
     const titleText = screen.getByText(/test task/i);
     expect(titleText).toBeInTheDocument();
     const checkbox = screen.getByRole('checkbox');
@@ -47,14 +63,14 @@ describe('TaskItem Component', () => {
   });
 
   it('calls updateTask.mutate when checkbox is toggled', () => {
-    render(<TaskItem id="1" title="Test Task" completed={false} />);
+    render(<TaskItem task={testTaskUnCompleted} />);
     const checkbox = screen.getByRole('checkbox');
     fireEvent.click(checkbox);
     expect(mockUpdate.mutate).toHaveBeenCalledWith({ id: '1', data: { completed: true } });
   });
 
   it('renders TaskDialog and DeleteDialog components', () => {
-    render(<TaskItem id="1" title="Test Task" completed={false} />);
+    render(<TaskItem task={testTaskUnCompleted} />);
     const taskDialog = screen.getByTestId('task-dialog');
     const deleteDialog = screen.getByTestId('delete-dialog');
     expect(taskDialog).toBeInTheDocument();
@@ -62,14 +78,14 @@ describe('TaskItem Component', () => {
   });
 
   it('calls deleteTask.mutate when delete is confirmed', () => {
-    render(<TaskItem id="1" title="Test Task" completed={false} />);
+    render(<TaskItem task={testTaskUnCompleted} />);
     const deleteDialog = screen.getByTestId('delete-dialog');
     fireEvent.click(deleteDialog);
     expect(mockDelete.mutate).toHaveBeenCalledWith('1');
   });
 
   it('renders line-through style for completed tasks', () => {
-    render(<TaskItem id="1" title="Test Task" completed={true} />);
+    render(<TaskItem task={testTaskCompleted} />);
     const titleText = screen.getByText(/test task/i);
     expect(titleText).toHaveClass('line-through');
   });

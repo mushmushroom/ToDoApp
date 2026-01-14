@@ -61,7 +61,7 @@ describe('utils functions', () => {
       json: async () => ({ id: '1', title: 'New task' }),
     });
 
-    const result = await createTask('New task');
+    const result = await createTask({ title: 'New task', categoryId: '1' });
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/tasks`,
       expect.objectContaining({
@@ -78,7 +78,9 @@ describe('utils functions', () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: false,
     });
-    await expect(createTask('New task')).rejects.toThrow('Failed to fetch a task');
+    await expect(createTask({ title: 'New task', categoryId: '1' })).rejects.toThrow(
+      'Failed to fetch a task'
+    );
     expect(toast.error).toHaveBeenCalledWith('Failed to fetch a task');
   });
 
@@ -105,8 +107,8 @@ describe('utils functions', () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: false,
     });
-    await expect(updateTask('1', { title: 'New task' })).rejects.toThrow('Failed to fetch a task');
-    expect(toast.error).toHaveBeenCalledWith('Failed to fetch a task');
+    await expect(updateTask('1', { title: 'New task' })).rejects.toThrow('Failed to update a task');
+    expect(toast.error).toHaveBeenCalledWith('Failed to update a task');
   });
 
   it('deleteTask calls the correct endpoint and shows toast on success', async () => {
@@ -131,7 +133,7 @@ describe('utils functions', () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: false,
     });
-    await expect(deleteTask('1')).rejects.toThrow('Failed to fetch a task');
-    expect(toast.error).toHaveBeenCalledWith('Failed to fetch a task');
+    await expect(deleteTask('1')).rejects.toThrow('Failed to delete a task');
+    expect(toast.error).toHaveBeenCalledWith('Failed to delete a task');
   });
 });

@@ -80,7 +80,7 @@ export async function deleteTask(id: string) {
       method: 'DELETE',
     });
 
-    if (!response.ok) throw new Error('Failed to fetch a task');
+    if (!response.ok) throw new Error('Failed to delete a task');
     toast.success('The task has been deleted.');
     return await response.json();
   } catch (error) {
