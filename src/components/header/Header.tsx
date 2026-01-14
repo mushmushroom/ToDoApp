@@ -20,7 +20,7 @@ export default function Header() {
           {/* Left links */}
           <div className="flex gap-3 items-center">
             <NavigationMenuLink asChild className="text-xl">
-              <Link href={AppPath.Home}>
+              <Link href={AppPath.Home} aria-label="home page">
                 <Image src="/cover.png" alt="Logo img" width={120} height={60} />
               </Link>
             </NavigationMenuLink>
