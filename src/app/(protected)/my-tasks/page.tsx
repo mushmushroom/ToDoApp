@@ -8,8 +8,10 @@ import { useAllTasks, useCreateTask } from '@/lib/hooks/useTasks';
 import { useState } from 'react';
 
 type CategoryFilter = 'all' | 'none' | string;
-
-export default function MyTasks() {
+interface MyTasksProps {
+  isDemo?: boolean;
+}
+export default function MyTasks({ isDemo = false }: MyTasksProps) {
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
   const {
     data: tasks,
@@ -26,7 +28,7 @@ export default function MyTasks() {
         mode="add"
         onSubmit={(title, categoryId) => createTask.mutate({ title, categoryId })}
       />
-      <CategoriesSection value={categoryFilter} onChange={setCategoryFilter} />
+      <CategoriesSection value={categoryFilter} onChange={setCategoryFilter} isDemo={isDemo} />
       <div className="py-7 flex flex-col gap-3">
         {isLoading ? (
           <LoadingTasks />
