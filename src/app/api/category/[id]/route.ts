@@ -10,6 +10,16 @@ export async function PATCH(request: NextRequest, context: { params: Promise<{ i
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const user = await prisma.user.findUnique({
+    where: {
+      id: currentId,
+    },
+  });
+
+  if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
+  if (user.isDemo) NextResponse.json({ error: 'Not avaiable for demo users' }, { status: 401 });
+
   const { id: categoryId } = await context.params;
 
   const body = await request.json();
@@ -47,6 +57,15 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
   if (!currentId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: currentId,
+    },
+  });
+  if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
+  if (user.isDemo) NextResponse.json({ error: 'Not avaiable for demo users' }, { status: 401 });
 
   const { id: categoryId } = await context.params;
   const deleteTasks = request.nextUrl.searchParams.get('deleteTasks') === 'true';

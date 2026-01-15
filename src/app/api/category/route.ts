@@ -10,6 +10,14 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const user = await prisma.user.findUnique({
+    where: {
+      id: currentId,
+    },
+  });
+
+  if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
   const categories = await prisma.categories.findMany({
     where: {
       userId: currentId,
@@ -29,6 +37,16 @@ export async function POST(request: Request) {
   if (!currentId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: currentId,
+    },
+  });
+
+  if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
+  if (user.isDemo) NextResponse.json({ error: 'Not avaiable for demo users' }, { status: 401 });
 
   const body = await request.json();
   const { name } = body;
