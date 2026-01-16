@@ -12,7 +12,7 @@ import {
 interface CategoriesSelectProps {
   categories?: Category[];
   value?: string | null;
-  onChange?: (value:string) => void;
+  onChange?: (value: string) => void;
   allowAll?: boolean;
 }
 export default function CategoriesSelect({

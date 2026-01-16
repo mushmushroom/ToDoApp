@@ -37,6 +37,21 @@ describe('TaskDialog Component', () => {
     expect(editButton).toBeInTheDocument();
   });
 
+  it('categories are displayed in select', () => {
+    render(<TaskDialog mode="edit" onSubmit={onSubmit} defaultTitle="Get groceries" />);
+    const editButton = screen.getByTitle(/edit a task/i);
+    fireEvent.click(editButton);
+    const categorySelect = screen.getByRole('combobox');
+    expect(categorySelect).toBeInTheDocument();
+
+    fireEvent.click(categorySelect);
+    const options = screen.getAllByRole('option');
+    expect(options).toHaveLength(3); 
+    expect(options[0]).toHaveTextContent('No category');
+    expect(options[1]).toHaveTextContent('Work');
+    expect(options[2]).toHaveTextContent('Personal');
+  });
+
   it('show defaultTitle if passed in edit mode', () => {
     render(<TaskDialog mode="edit" onSubmit={onSubmit} defaultTitle="Get groceries" />);
     const editButton = screen.getByTitle(/edit a task/i);

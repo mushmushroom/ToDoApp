@@ -54,10 +54,12 @@ describe('TaskItem Component', () => {
     jest.clearAllMocks();
   });
 
-  it('renders task item with correct title and completion status', () => {
+  it('renders task item with correct title, category and completion status', () => {
     render(<TaskItem task={testTaskUnCompleted} />);
     const titleText = screen.getByText(/test task/i);
     expect(titleText).toBeInTheDocument();
+    const categoryText = screen.getByText(/work/i)
+    expect(categoryText).toBeInTheDocument();
     const checkbox = screen.getByRole('checkbox');
     expect(checkbox).not.toBeChecked();
   });

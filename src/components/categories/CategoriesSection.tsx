@@ -1,7 +1,6 @@
 import useGetCategories, { useCreateCategory } from '@/lib/hooks/useCategories';
 import { Button } from '../ui/button';
 import CategoriesSelect from './CategoriesSelect';
-import CategoryDialog from './CategoryDialog';
 import Link from 'next/link';
 import { AppPath } from '@/lib/links';
 import { Tooltip, TooltipContent } from '../ui/tooltip';
@@ -19,7 +18,6 @@ export default function CategoriesSection({
   isDemo = false,
 }: CategoriesSectionProps) {
   const { data } = useGetCategories();
-  console.log(isDemo);
 
   return (
     <div className="flex items-center gap-3 mt-4">
