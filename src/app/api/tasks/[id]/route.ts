@@ -1,3 +1,4 @@
+import { Prisma } from '@/generated/prisma';
 import { auth } from '@/lib/config/auth';
 import prisma from '@/lib/config/prisma';
 import { NextRequest, NextResponse } from 'next/server';
@@ -49,15 +50,24 @@ export async function PATCH(request: NextRequest, context: { params: Promise<{ i
 
   if (!existingTask) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
+  const data: Prisma.TasksUpdateInput = {
+    title: title ?? existingTask.title,
+    completed: completed ?? existingTask.completed,
+  };
+
+  if (categoryId !== undefined) {
+    if (categoryId === 'none') {
+      data.categories = { disconnect: true };
+    } else {
+      data.categories = { connect: { id: categoryId } };
+    }
+  }
+  
   const updatedTask = await prisma.tasks.update({
     where: {
       id: taskId,
     },
-    data: {
-      title: title ?? existingTask.title,
-      completed: completed ?? existingTask.completed,
-      categories: categoryId === 'none' ? { disconnect: true } : { connect: { id: categoryId } },
-    },
+    data
   });
 
   return NextResponse.json(updatedTask, { status: 200 });

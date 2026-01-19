@@ -6,7 +6,6 @@ import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import useProvider from '@/lib/hooks/useProvider';
 import { useSession } from 'next-auth/react';
-import { FaSpinner } from 'react-icons/fa';
 
 export default function AccountPage() {
   const { data: session } = useSession();
@@ -20,10 +19,8 @@ export default function AccountPage() {
       </div>
     );
 
-  if (isError) { 
-    return (
-      <ErrorMessage title="Error loading account data" onRetry={refetch}/>
-    )
+  if (isError) {
+    return <ErrorMessage title="Error loading account data" onRetry={refetch} />;
   }
   return (
     <div>
