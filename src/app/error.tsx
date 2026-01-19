@@ -18,11 +18,6 @@ export default function Error({
   }, [error]);
 
   return (
-    // <div>
-
-    //   <h2>Something went wrong!</h2>
-    //   <Button onClick={() => reset()}>Try again</Button>
-    // </div>
     <main className="flex flex-col items-center justify-center w-full min-h-screen gap-6  text-center px-4">
       <Image src="/500-gif.gif" alt="Server error illustration" width={260} height={260} priority />
 

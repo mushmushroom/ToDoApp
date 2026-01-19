@@ -10,7 +10,7 @@ jest.mock('next-auth/react', () => ({
   })),
 }));
 
-jest.mock('../custom/FormField.tsx', () => {
+jest.mock('../common/FormField.tsx', () => {
   const MockFormField = (props: { type: string }) => (
     <input type={props.type} data-testid="form-field" />
   );

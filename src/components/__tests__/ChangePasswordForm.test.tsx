@@ -4,7 +4,7 @@ import useSettings from '@/lib/hooks/useSettings';
 
 jest.mock('@/lib/hooks/useSettings');
 
-jest.mock('../custom/FormField.tsx', () => {
+jest.mock('../common/FormField.tsx', () => {
   const MockFormField = (props: { type: string }) => (
     <input type={props.type} data-testid="form-field" />
   );

@@ -25,6 +25,10 @@ The project is built using the following frameworks and libraries
 - Tailwind
 - Prisma
 
+For tests the following libraries are used:
+- React Testing Library + Jest - for unit tests
+- Cypress - for E2E tests 
+
 ## Features
 
 Both registered users and demo users can:
@@ -33,10 +37,12 @@ Both registered users and demo users can:
 - Edit existing tasks
 - Mark tasks as completed
 - Delete tasks
+- Assign categories to tasks
 
 Registered users also get:
 
 - Persistent storage linked to their account
+- Ability to add, edit and delete categories
 - Secure login via Email, GitHub, or Google
 - Option to change their password
 
@@ -44,8 +50,6 @@ Registered users also get:
 
 - Task list pagination
 - Reset forgotten password
-- Task filters
-- Task categories
 - Option to change email
 - Option to delete all completed tasks
 - Dark theme

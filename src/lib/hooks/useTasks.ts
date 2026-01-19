@@ -2,8 +2,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createTask, deleteTask, fetchTask, fetchTasks, updateTask } from '../utils';
 import { Task } from '../types/types';
 
-export function useAllTasks() {
-  return useQuery<Task[]>({ queryKey: ['tasks'], queryFn: fetchTasks });
+export function useAllTasks(categoryId?:string) {
+  return useQuery<Task[]>({
+    queryKey: ['tasks', categoryId ?? 'all'],
+    queryFn: () => fetchTasks(categoryId),
+  });
 }
 
 export function useTask(id: string) {
@@ -26,7 +29,7 @@ export function useUpdateTask() {
       data,
     }: {
       id: string;
-      data: Partial<{ title: string; completed: boolean }>;
+      data: Partial<{ title: string; completed: boolean, categoryId: string | null }>;
     }) => updateTask(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tasks'] }),
   });
