@@ -57,7 +57,6 @@ export async function updateTask(
   id: string,
   data: Partial<{ title: string; completed: boolean; categoryId: string | null }>
 ) {
-  console.log(data);
   try {
     const response = await fetch(`${API_URL}/tasks/${id}`, {
       method: 'PATCH',
