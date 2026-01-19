@@ -11,7 +11,6 @@ import {
   DialogTrigger,
 } from '../ui/dialog';
 import { Button } from '../ui/button';
-import { FaEdit } from 'react-icons/fa';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';

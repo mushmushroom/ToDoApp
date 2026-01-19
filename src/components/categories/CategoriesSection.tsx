@@ -1,4 +1,4 @@
-import useGetCategories, { useCreateCategory } from '@/lib/hooks/useCategories';
+import useGetCategories from '@/lib/hooks/useCategories';
 import { Button } from '../ui/button';
 import CategoriesSelect from './CategoriesSelect';
 import Link from 'next/link';

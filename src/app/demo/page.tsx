@@ -74,7 +74,7 @@ export default function DemoPage() {
         <div role="note" className="mb-4 bg-yellow-400 p-5 rounded-md flex items-center gap-2">
           <span>Demo account — tasks are temporary and reset every 24 hours.</span>
         </div>
-        <MyTasks isDemo={true} />
+        <MyTasks />
       </main>
     </>
   );

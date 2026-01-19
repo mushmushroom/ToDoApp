@@ -5,13 +5,12 @@ import LoadingTasks from '@/components/status/LoadingTasks';
 import TaskDialog from '@/components/tasks/TaskDialog';
 import TaskItem from '@/components/tasks/TaskItem';
 import { useAllTasks, useCreateTask } from '@/lib/hooks/useTasks';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 type CategoryFilter = 'all' | 'none' | string;
-interface MyTasksProps {
-  isDemo?: boolean;
-}
-export default function MyTasks({ isDemo = false }: MyTasksProps) {
+
+export default function MyTasks() {
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
   const {
     data: tasks,
@@ -20,6 +19,8 @@ export default function MyTasks({ isDemo = false }: MyTasksProps) {
     refetch,
   } = useAllTasks(categoryFilter === 'all' ? undefined : categoryFilter);
   const createTask = useCreateTask();
+  const pathname = usePathname();
+  const isDemo = pathname.includes('demo');
 
   return (
     <section className="py-3">
