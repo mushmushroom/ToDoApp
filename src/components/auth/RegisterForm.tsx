@@ -1,4 +1,4 @@
-import FormField from '@/components/custom/FormField';
+import FormField from '@/components/common/FormField';
 import useAuth from '@/lib/hooks/useAuth';
 import { Button } from '../ui/button';
 

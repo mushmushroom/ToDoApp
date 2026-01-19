@@ -1,10 +1,12 @@
 import { auth } from '@/lib/config/auth';
 import prisma from '@/lib/config/prisma';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const session = await auth();
   const currentId = session?.user?.id;
+  const searchParams = request.nextUrl.searchParams;
+  const categoryId = searchParams.get('category');
 
   if (!currentId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -13,6 +15,11 @@ export async function GET() {
   const tasks = await prisma.tasks.findMany({
     where: {
       userId: currentId,
+      ...(categoryId &&
+        (categoryId === 'none' ? { categoriesId: null } : { categoriesId: categoryId })),
+    },
+    include: {
+      categories: true,
     },
     orderBy: [
       {
@@ -37,7 +44,7 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { title } = body;
+  const { title, categoryId } = body;
 
   if (!title) {
     return NextResponse.json({ error: 'Task title is required' }, { status: 400 });
@@ -47,6 +54,7 @@ export async function POST(request: Request) {
     data: {
       title,
       userId: currentId,
+      categoriesId: categoryId || null,
     },
   });
 

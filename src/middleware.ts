@@ -54,12 +54,12 @@ export async function middleware(req: NextRequest) {
   const isDemo = await isDemoUser(req);
 
   // Redirect unauthenticated users from protected routes
-  if (!isAuthenticated && [AppPath.MyTasks, AppPath.Settings].some((p) => pathname.startsWith(p))) {
+  if (!isAuthenticated && [AppPath.MyTasks, AppPath.Settings, AppPath.MyCategories].some((p) => pathname.startsWith(p))) {
     return NextResponse.redirect(new URL(AppPath.SignIn, req.url));
   }
 
   // Redirect demo users from protected routes to demo page
-  if (isDemo && [AppPath.MyTasks, AppPath.Settings].some((p) => pathname.startsWith(p))) {
+  if (isDemo && [AppPath.MyTasks, AppPath.Settings, AppPath.MyCategories].some((p) => pathname.startsWith(p))) {
     return NextResponse.redirect(new URL(AppPath.Demo, req.url));
   }
 
@@ -101,6 +101,8 @@ export const config = {
     '/auth/register', // AppPath.Register
     '/my-tasks', // AppPath.MyTasks
     '/my-tasks/:path*',
+    '/categories/', // AppPath.MyCategories
+    '/categories/:path*',
     '/settings',
     '/settings/:path*',
     '/demo', // AppPath.Demo

@@ -66,31 +66,64 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (email.startsWith('demo-')) {
           let demoUser = await prisma.user.findUnique({
-            where: {
-              email,
-            },
+            where: { email },
           });
 
           if (!demoUser) {
-            demoUser = await prisma.user.create({
-              data: {
-                email,
-                name: 'Demo User',
-                isDemo: true,
-                password: await bcrypt.hash('demo', 10),
-              },
+            const { user, categories } = await prisma.$transaction(async (tx) => {
+              const user = await tx.user.create({
+                data: {
+                  email,
+                  name: 'Demo User',
+                  isDemo: true,
+                  password: await bcrypt.hash('demo', 10),
+                },
+              });
+
+              const work = await tx.categories.create({
+                data: { name: 'Work', userId: user.id },
+              });
+
+              const personal = await tx.categories.create({
+                data: { name: 'Personal', userId: user.id },
+              });
+
+              const shopping = await tx.categories.create({
+                data: { name: 'Shopping', userId: user.id },
+              });
+
+              return {
+                user,
+                categories: { work, personal, shopping },
+              };
             });
+
+            demoUser = user;
 
             await prisma.tasks.createMany({
               data: [
-                { title: 'Welcome to your demo account!', userId: demoUser.id },
-                { title: 'This is your first task.', userId: demoUser.id },
-                { title: 'Feel free to explore the app.', userId: demoUser.id },
+                {
+                  title: 'Welcome to your demo account!',
+                  userId: demoUser.id,
+                  categoriesId: categories.work.id,
+                },
+                {
+                  title: 'This is your first task.',
+                  userId: demoUser.id,
+                  categoriesId: categories.personal.id,
+                },
+                {
+                  title: 'Feel free to explore the app.',
+                  userId: demoUser.id,
+                  categoriesId: categories.shopping.id,
+                },
               ],
             });
           }
+
           return demoUser;
         }
+
 
         const user = await prisma.user.findUnique({
           where: {

@@ -21,6 +21,9 @@ export async function GET() {
     return NextResponse.json({ error: 'User not found' }, { status: 404 });
   }
 
+    if (user.isDemo) NextResponse.json({ error: 'Not avaiable for demo users' }, { status: 401 });
+
+
   const providers = user.accounts.map((a) => a.provider);
   const isOAuth = providers.length > 0;
 

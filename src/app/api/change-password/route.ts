@@ -19,6 +19,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 });
   }
 
+  if (user.isDemo) NextResponse.json({ error: 'Not avaiable for demo users' }, { status: 401 });
+
   if (!user.password) {
     return NextResponse.json({ error: 'No password is set for this user' }, { status: 400 });
   }

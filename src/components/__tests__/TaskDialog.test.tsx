@@ -1,8 +1,26 @@
+import useGetCategories from '@/lib/hooks/useCategories';
 import TaskDialog from '../tasks/TaskDialog';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+jest.mock('@/lib/hooks/useCategories', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+
+const mockCategories = [
+  { id: '1', name: 'Work' },
+  { id: '2', name: 'Personal' },
+];
+
 describe('TaskDialog Component', () => {
+  beforeEach(() => {
+    (useGetCategories as jest.Mock).mockReturnValue({
+      data: mockCategories,
+      isLoading: false,
+      isError: false,
+    });
+  });
   const onSubmit = jest.fn(() => {
     return new Promise((resolve) => setTimeout(resolve, 500));
   });
@@ -14,16 +32,32 @@ describe('TaskDialog Component', () => {
     expect(addButton).toBeInTheDocument();
 
     // Test for 'edit' mode
-    render(<TaskDialog mode="edit" onSubmit={onSubmit} />);
+    render(<TaskDialog mode="edit" onSubmit={onSubmit} defaultTitle="Get groceries" />);
     const editButton = screen.getByTitle(/edit a task/i);
     expect(editButton).toBeInTheDocument();
+  });
+
+  it('categories are displayed in select', () => {
+    render(<TaskDialog mode="edit" onSubmit={onSubmit} defaultTitle="Get groceries" />);
+    const editButton = screen.getByTitle(/edit a task/i);
+    fireEvent.click(editButton);
+    const categorySelect = screen.getByRole('combobox');
+    expect(categorySelect).toBeInTheDocument();
+
+    fireEvent.click(categorySelect);
+    const options = screen.getAllByRole('option');
+    expect(options).toHaveLength(3); 
+    expect(options[0]).toHaveTextContent('No category');
+    expect(options[1]).toHaveTextContent('Work');
+    expect(options[2]).toHaveTextContent('Personal');
   });
 
   it('show defaultTitle if passed in edit mode', () => {
     render(<TaskDialog mode="edit" onSubmit={onSubmit} defaultTitle="Get groceries" />);
     const editButton = screen.getByTitle(/edit a task/i);
     fireEvent.click(editButton);
-    const input = screen.getByPlaceholderText(/e.g. get groceries/i);
+
+    const input = screen.getByPlaceholderText(/e.g. Get groceries/i);
     expect(input).toHaveValue('Get groceries');
   });
 
@@ -79,6 +113,6 @@ describe('TaskDialog Component', () => {
     fireEvent.click(saveButton);
     expect(screen.getByRole('button', { name: /saving/i })).toBeInTheDocument();
     await new Promise((resolve) => setTimeout(resolve, 600));
-    expect(onSubmit).toHaveBeenCalledWith('New task');
+    expect(onSubmit).toHaveBeenCalledWith('New task', null);
   });
 });
