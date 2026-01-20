@@ -40,7 +40,7 @@ describe('useAuth hook', () => {
   });
 
   describe('Registration flow', () => {
-    it('Calls /api/register and redirects on success', async () => {
+    it('Calls /register and redirects on success', async () => {
       (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => ({}),

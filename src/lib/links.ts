@@ -3,6 +3,7 @@ export enum AppPath {
   SignIn = '/auth/sign-in',
   Register = '/auth/register',
   MyTasks = '/my-tasks',
+  MyCategories = '/categories',
   Settings = '/settings',
   Demo = '/demo',
 }

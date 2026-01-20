@@ -7,9 +7,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export async function fetchTasks() {
+export async function fetchTasks(categoryId?: string) {
   try {
-    const response = await fetch(`${API_URL}/tasks`);
+    const response = await fetch(
+      `${API_URL}/tasks${categoryId && categoryId !== 'all' ? `?category=${categoryId}` : ''}`
+    );
     if (!response.ok) throw new Error('Failed to fetch tasks');
     return await response.json();
   } catch (error) {
@@ -29,12 +31,17 @@ export async function fetchTask(id: string) {
   }
 }
 
-export async function createTask(title: string) {
+type CreateTaskInput = {
+  title: string;
+  categoryId: string | null;
+};
+
+export async function createTask({ title, categoryId }: CreateTaskInput) {
   try {
     const response = await fetch(`${API_URL}/tasks`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title }),
+      body: JSON.stringify({ title, categoryId }),
     });
 
     if (!response.ok) throw new Error('Failed to fetch a task');
@@ -46,7 +53,10 @@ export async function createTask(title: string) {
   }
 }
 
-export async function updateTask(id: string, data: Partial<{ title: string; completed: boolean }>) {
+export async function updateTask(
+  id: string,
+  data: Partial<{ title: string; completed: boolean; categoryId: string | null }>
+) {
   try {
     const response = await fetch(`${API_URL}/tasks/${id}`, {
       method: 'PATCH',
@@ -54,7 +64,7 @@ export async function updateTask(id: string, data: Partial<{ title: string; comp
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) throw new Error('Failed to fetch a task');
+    if (!response.ok) throw new Error('Failed to update a task');
     toast.success('The task has been updated.');
     return await response.json();
   } catch (error) {
@@ -69,8 +79,77 @@ export async function deleteTask(id: string) {
       method: 'DELETE',
     });
 
-    if (!response.ok) throw new Error('Failed to fetch a task');
+    if (!response.ok) throw new Error('Failed to delete a task');
     toast.success('The task has been deleted.');
+    return await response.json();
+  } catch (error) {
+    toast.error((error as Error).message);
+    throw error;
+  }
+}
+
+export async function fetchCategories() {
+  try {
+    const response = await fetch(`${API_URL}/category`);
+    if (!response.ok) throw new Error('Failed to fetch categories');
+    return await response.json();
+  } catch (error) {
+    toast.error((error as Error).message);
+    throw error;
+  }
+}
+
+export async function createCategory(name: string) {
+  try {
+    const response = await fetch(`${API_URL}/category`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name }),
+    });
+
+    if (!response.ok) throw new Error('Failed to create a category');
+    toast.success('The category has been added.');
+    return await response.json();
+  } catch (error) {
+    toast.error((error as Error).message);
+    throw error;
+  }
+}
+
+export async function updateCategory(
+  id: string,
+  data: {name: string}
+) {
+  try {
+    const response = await fetch(`${API_URL}/category/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) throw new Error('Failed to update a category');
+    toast.success('The category has been updated.');
+    return await response.json();
+  } catch (error) {
+    toast.error((error as Error).message);
+    throw error;
+  }
+}
+
+export async function deleteCategory(id: string, options: { deleteTasks: boolean }) {
+  try {
+    const params = new URLSearchParams();
+
+    if (options.deleteTasks) {
+      params.set('deleteTasks', 'true');
+    }
+
+    const response = await fetch(`${API_URL}/category/${id}?${params.toString()}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) throw new Error('Failed to delete a category');
+    toast.success(`The category ${options.deleteTasks ? "and all associated tasks have" : "has"} been deleted.`);
     return await response.json();
   } catch (error) {
     toast.error((error as Error).message);

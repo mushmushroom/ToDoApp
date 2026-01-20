@@ -13,7 +13,7 @@ jest.mock('sonner', () => ({
 global.fetch = jest.fn();
 
 describe('useSettings hook', () => {
-  it('Calls /api/change-password and shows toast on success', async () => {
+  it('Calls /change-password and shows toast on success', async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => ({}),

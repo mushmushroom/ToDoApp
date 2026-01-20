@@ -1,12 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import FormField from '../custom/FormField';
+import FormField from '../common/FormField';
 import { useForm } from 'react-hook-form';
 import { CHAR_LIMIT } from '@/lib/constants';
 
 function WrapperTextField() {
-  const {
-    register,
-  } = useForm({
+  const { register } = useForm({
     defaultValues: {
       name: '',
     },
@@ -44,9 +42,7 @@ function WrapperFieldHiddenLabel() {
 }
 
 function WrapperPasswordField() {
-  const {
-    register,
-  } = useForm({
+  const { register } = useForm({
     defaultValues: {
       password: '',
     },
