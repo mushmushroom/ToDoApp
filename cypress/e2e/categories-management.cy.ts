@@ -28,7 +28,9 @@ describe('Managing categories', () => {
     cy.contains('button', 'Add new category').click();
     cy.get('input[name="categoryTitle"]').type('Tes');
     cy.contains('The category name should contain at least 4 characters');
+    cy.contains('button', 'Save').should('be.disabled');
   });
+
   it('category name is edited and displayed on the page', () => {
     cy.visit('/categories');
     cy.contains('button', 'Add new category').click();

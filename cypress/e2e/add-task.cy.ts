@@ -13,6 +13,7 @@ describe('Add task flow', () => {
     cy.contains('button', 'Add new task').click();
     cy.get('input[name="taskTitle"]').type('tes');
     cy.contains('The task should contain at least 5 characters');
+    cy.contains('button', 'Save').should('be.disabled')
   });
 
   it('task can be created successfully and appears on the page', () => {
