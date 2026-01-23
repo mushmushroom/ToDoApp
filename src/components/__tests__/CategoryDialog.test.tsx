@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CategoryDialog from '../categories/CategoryDialog';
 
@@ -48,40 +48,45 @@ describe('CategoryDialog Component', () => {
     expect(input).not.toBeInTheDocument();
   });
 
-  it('Show validation error if input is too short', async () => {
+  it('Show validation error if input is too short and button is disabled', async () => {
     render(<CategoryDialog mode="add" onSubmit={onSubmit} />);
     const addButton = screen.getByRole('button', { name: /add new category/i });
     fireEvent.click(addButton);
     const input = screen.getByPlaceholderText(/e.g. Work, Personal, Shopping.../i);
     fireEvent.change(input, { target: { value: 'New' } });
     const saveButton = screen.getByRole('button', { name: /save/i });
-    await userEvent.click(saveButton);
+    expect(saveButton).toHaveAttribute('disabled');
+
     expect(
-      screen.getByText(/The category name should contain at least 4 characters/i)
+      await screen.findByText(/The category name should contain at least 4 characters/i),
     ).toBeInTheDocument();
   });
 
   it('Correct text is displayed on the submit button when form is being submitted', async () => {
+    const user = userEvent.setup();
     render(<CategoryDialog mode="add" onSubmit={onSubmit} />);
-    const addButton = screen.getByRole('button', { name: /add new category/i });
-    fireEvent.click(addButton);
-    const input = screen.getByPlaceholderText(/e.g. Work, Personal, Shopping.../i);
-    fireEvent.change(input, { target: { value: 'New category' } });
-    const saveButton = screen.getByRole('button', { name: /save/i });
-    fireEvent.click(saveButton);
-    expect(screen.getByRole('button', { name: /saving/i })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /add new category/i }));
+    await user.type(
+      screen.getByPlaceholderText(/e.g. Work, Personal, Shopping.../i),
+      'New category',
+    );
+
+    await user.click(screen.getByRole('button', { name: /save/i }));
+    expect(await screen.findByRole('button', { name: /saving/i })).toBeInTheDocument();
   });
 
   it('Calls onSubmit when the form is submitted', async () => {
+    const user = userEvent.setup();
     render(<CategoryDialog mode="add" onSubmit={onSubmit} />);
-    const addButton = screen.getByRole('button', { name: /add new category/i });
-    fireEvent.click(addButton);
-    const input = screen.getByPlaceholderText(/e.g. Work, Personal, Shopping.../i);
-    fireEvent.change(input, { target: { value: 'New category' } });
-    const saveButton = screen.getByRole('button', { name: /save/i });
-    fireEvent.click(saveButton);
-    expect(screen.getByRole('button', { name: /saving/i })).toBeInTheDocument();
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    expect(onSubmit).toHaveBeenCalledWith('New category');
+    await user.click(screen.getByRole('button', { name: /add new category/i }));
+    await user.type(
+      screen.getByPlaceholderText(/e.g. Work, Personal, Shopping.../i),
+      'New category',
+    );
+    await user.click(screen.getByRole('button', { name: /save/i }));
+    await screen.findByRole('button', { name: /saving/i });
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith('New category');
+    });
   });
 });

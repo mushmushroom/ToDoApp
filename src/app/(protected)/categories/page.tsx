@@ -15,7 +15,7 @@ export default function MyCategories() {
     <section className="py-3">
       <h1 className="text-center text-2xl mb-5 font-bold">My categories</h1>
       <div className="flex items-center gap-3">
-        <CategoryDialog mode="add" onSubmit={(title) => createCategory.mutate(title)} />
+        <CategoryDialog mode="add" onSubmit={(title) => createCategory.mutateAsync(title)} />
         <Button variant="outline" asChild>
           <Link href={AppPath.MyTasks}>Back to the tasks</Link>
         </Button>
