@@ -41,7 +41,7 @@ export default function RegisterForm() {
         isPasswordField
       />
 
-      <Button className="cursor-pointer" disabled={isRegisterSubmitting}>
+      <Button className="cursor-pointer" disabled={isRegisterSubmitting} type="submit">
         {isRegisterSubmitting ? 'Processing...' : 'Register'}
       </Button>
       {isRecaptchaError && <p className="text-red-500">Unable to load CAPTCHA. Try reloading.</p>}

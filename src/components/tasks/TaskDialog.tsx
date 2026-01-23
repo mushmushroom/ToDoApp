@@ -45,7 +45,7 @@ const TaskDialog = ({ mode, defaultTitle, defaultCategoryId, onSubmit }: TaskDia
 
   const {
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
     handleSubmit,
     reset,
     watch,
@@ -70,18 +70,18 @@ const TaskDialog = ({ mode, defaultTitle, defaultCategoryId, onSubmit }: TaskDia
       return;
     }
 
-    onSubmit(newTitle, data.categoryId ?? null);
+    await onSubmit(newTitle, data.categoryId ?? null);
     reset();
     setIsOpen(false);
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={(open) => !isSubmitting && setIsOpen(open)}>
       <DialogTrigger asChild>
         {mode === 'add' ? (
           <Button variant="default">Add new task</Button>
         ) : (
-         <EditButton title="Edit a task" />
+          <EditButton title="Edit a task" />
         )}
       </DialogTrigger>
 
@@ -124,7 +124,7 @@ const TaskDialog = ({ mode, defaultTitle, defaultCategoryId, onSubmit }: TaskDia
             <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting || !isValid}>
               {isSubmitting ? 'Saving...' : 'Save'}
             </Button>
           </DialogFooter>

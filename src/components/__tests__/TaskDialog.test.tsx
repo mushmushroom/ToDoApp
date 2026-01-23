@@ -1,6 +1,6 @@
 import useGetCategories from '@/lib/hooks/useCategories';
 import TaskDialog from '../tasks/TaskDialog';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 jest.mock('@/lib/hooks/useCategories', () => ({
@@ -46,7 +46,7 @@ describe('TaskDialog Component', () => {
 
     fireEvent.click(categorySelect);
     const options = screen.getAllByRole('option');
-    expect(options).toHaveLength(3); 
+    expect(options).toHaveLength(3);
     expect(options[0]).toHaveTextContent('No category');
     expect(options[1]).toHaveTextContent('Work');
     expect(options[2]).toHaveTextContent('Personal');
@@ -81,38 +81,38 @@ describe('TaskDialog Component', () => {
     expect(input).not.toBeInTheDocument();
   });
 
-  it('Show validation error if input is too short', async () => {
+  it('Show validation error if input is too short, submit button is disabled', async () => {
     render(<TaskDialog mode="add" onSubmit={onSubmit} />);
     const addButton = screen.getByRole('button', { name: /add new task/i });
     fireEvent.click(addButton);
     const input = screen.getByPlaceholderText(/e.g. get groceries/i);
     fireEvent.change(input, { target: { value: 'New' } });
     const saveButton = screen.getByRole('button', { name: /save/i });
-    await userEvent.click(saveButton);
-    expect(screen.getByText(/The task should contain at least 5 characters/i)).toBeInTheDocument();
+    expect(saveButton).toHaveAttribute('disabled');
+    expect(
+      await screen.findByText(/The task should contain at least 5 characters/i),
+    ).toBeInTheDocument();
   });
 
   it('Correct text is displayed on the submit button when form is being submitted', async () => {
+    const user = userEvent.setup();
     render(<TaskDialog mode="add" onSubmit={onSubmit} />);
-    const addButton = screen.getByRole('button', { name: /add new task/i });
-    fireEvent.click(addButton);
-    const input = screen.getByPlaceholderText(/e.g. get groceries/i);
-    fireEvent.change(input, { target: { value: 'New task' } });
-    const saveButton = screen.getByRole('button', { name: /save/i });
-    fireEvent.click(saveButton);
-    expect(screen.getByRole('button', { name: /saving/i })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /add new task/i }));
+    await user.type(screen.getByPlaceholderText(/e.g. get groceries/i), 'New task');
+
+    await user.click(screen.getByRole('button', { name: /save/i }));
+    expect(await screen.findByRole('button', { name: /saving/i })).toBeInTheDocument();
   });
 
   it('Calls onSubmit when the form is submitted', async () => {
+    const user = userEvent.setup();
     render(<TaskDialog mode="add" onSubmit={onSubmit} />);
-    const addButton = screen.getByRole('button', { name: /add new task/i });
-    fireEvent.click(addButton);
-    const input = screen.getByPlaceholderText(/e.g. get groceries/i);
-    fireEvent.change(input, { target: { value: 'New task' } });
-    const saveButton = screen.getByRole('button', { name: /save/i });
-    fireEvent.click(saveButton);
-    expect(screen.getByRole('button', { name: /saving/i })).toBeInTheDocument();
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    expect(onSubmit).toHaveBeenCalledWith('New task', null);
+    await user.click(screen.getByRole('button', { name: /add new task/i }));
+    await user.type(screen.getByPlaceholderText(/e.g. get groceries/i), 'New task');
+    await user.click(screen.getByRole('button', { name: /save/i }));
+    await screen.findByRole('button', { name: /saving/i });
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith('New task', null);
+    });
   });
 });

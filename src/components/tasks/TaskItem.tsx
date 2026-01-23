@@ -20,6 +20,8 @@ const TaskItem = ({ task }: TaskItemProps) => {
       <div>
         <div className={`${itemStyles.titleText} mb-3`}>
           <input
+            aria-checked={task.completed}
+            aria-label={task.completed ? "Completed" : "Not completed"}
             type="checkbox"
             checked={task.completed}
             onChange={() =>

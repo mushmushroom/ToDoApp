@@ -27,7 +27,7 @@ export default function MyTasks() {
       <h1 className="text-center text-2xl mb-5 font-bold">My tasks</h1>
       <TaskDialog
         mode="add"
-        onSubmit={(title, categoryId) => createTask.mutate({ title, categoryId })}
+        onSubmit={(title, categoryId) => createTask.mutateAsync({ title, categoryId })}
       />
       <CategoriesSection value={categoryFilter} onChange={setCategoryFilter} isDemo={isDemo} />
       <div className="py-7 flex flex-col gap-3">

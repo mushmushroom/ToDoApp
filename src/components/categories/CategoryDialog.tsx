@@ -40,7 +40,7 @@ const CategoryDialog = ({ mode, defaultTitle, onSubmit }: CategoryDialogProps) =
 
   const {
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
     handleSubmit,
     reset,
     watch,
@@ -64,7 +64,7 @@ const CategoryDialog = ({ mode, defaultTitle, onSubmit }: CategoryDialogProps) =
       return;
     }
 
-    onSubmit(newTitle);
+    await onSubmit(newTitle);
     reset();
     setIsOpen(false);
   }
@@ -93,9 +93,9 @@ const CategoryDialog = ({ mode, defaultTitle, onSubmit }: CategoryDialogProps) =
           <FormField
             className="flex-grow"
             placeholder="e.g. Work, Personal, Shopping..."
-            id="taskTitle"
+            id="categoryTitle"
             type="text"
-            label="Task title"
+            label="Category title"
             registration={register('categoryTitle', { required: true })}
             errors={errors.categoryTitle}
             hasLabelHidden
@@ -106,7 +106,7 @@ const CategoryDialog = ({ mode, defaultTitle, onSubmit }: CategoryDialogProps) =
             <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting || !isValid}>
               {isSubmitting ? 'Saving...' : 'Save'}
             </Button>
           </DialogFooter>
