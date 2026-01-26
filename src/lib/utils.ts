@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { API_URL } from './constants';
 import { toast } from 'sonner';
+import crypto from 'crypto';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -10,7 +11,7 @@ export function cn(...inputs: ClassValue[]) {
 export async function fetchTasks(categoryId?: string) {
   try {
     const response = await fetch(
-      `${API_URL}/tasks${categoryId && categoryId !== 'all' ? `?category=${categoryId}` : ''}`
+      `${API_URL}/tasks${categoryId && categoryId !== 'all' ? `?category=${categoryId}` : ''}`,
     );
     if (!response.ok) throw new Error('Failed to fetch tasks');
     return await response.json();
@@ -55,7 +56,7 @@ export async function createTask({ title, categoryId }: CreateTaskInput) {
 
 export async function updateTask(
   id: string,
-  data: Partial<{ title: string; completed: boolean; categoryId: string | null }>
+  data: Partial<{ title: string; completed: boolean; categoryId: string | null }>,
 ) {
   try {
     const response = await fetch(`${API_URL}/tasks/${id}`, {
@@ -116,10 +117,7 @@ export async function createCategory(name: string) {
   }
 }
 
-export async function updateCategory(
-  id: string,
-  data: {name: string}
-) {
+export async function updateCategory(id: string, data: { name: string }) {
   try {
     const response = await fetch(`${API_URL}/category/${id}`, {
       method: 'PATCH',
@@ -149,10 +147,23 @@ export async function deleteCategory(id: string, options: { deleteTasks: boolean
     });
 
     if (!response.ok) throw new Error('Failed to delete a category');
-    toast.success(`The category ${options.deleteTasks ? "and all associated tasks have" : "has"} been deleted.`);
+    toast.success(
+      `The category ${options.deleteTasks ? 'and all associated tasks have' : 'has'} been deleted.`,
+    );
     return await response.json();
   } catch (error) {
     toast.error((error as Error).message);
     throw error;
   }
+}
+
+export function createVerificationToken() {
+  const token = crypto.randomBytes(32).toString('hex');
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+  return { token, hashedToken };
+}
+
+export function hashToken(token: string) {
+  return crypto.createHash('sha256').update(token).digest('hex');
 }

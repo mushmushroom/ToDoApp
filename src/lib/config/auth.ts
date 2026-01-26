@@ -1,4 +1,4 @@
-import NextAuth, { AuthError, Session } from 'next-auth';
+import NextAuth, { AuthError, CredentialsSignin, Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
@@ -124,7 +124,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return demoUser;
         }
 
-
         const user = await prisma.user.findUnique({
           where: {
             email,
@@ -138,7 +137,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const isValid = await bcrypt.compare(credentials.password as string, user.password!);
 
         if (!isValid) {
-          throw new Error('Invalid password');
+          throw new CredentialsSignin('INVALID_CREDENTIALS');
+        }
+
+        const isVerified = user.email_verified;
+
+        if (!isVerified) {
+          throw new CredentialsSignin('EMAIL_NOT_VERIFIED');
         }
         return { id: user.id, name: user.name, email: user.email, isDemo: user.isDemo };
       },

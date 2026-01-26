@@ -5,8 +5,16 @@ import { Button } from '../ui/button';
 import useAuth from '@/lib/hooks/useAuth';
 
 export default function LoginForm() {
-  const { registerSignIn, handleSubmitSignIn, onSubmitSignIn, errorsSignIn, isSignInSubmitting } =
-    useAuth();
+  const {
+    registerSignIn,
+    handleSubmitSignIn,
+    onSubmitSignIn,
+    errorsSignIn,
+    isSignInSubmitting,
+    verifiedEmail,
+    watchSignIn,
+    resendVerificationEmail,
+  } = useAuth();
   return (
     <form className="flex flex-col gap-5 w-full" onSubmit={handleSubmitSignIn(onSubmitSignIn)}>
       <FormField
@@ -16,6 +24,7 @@ export default function LoginForm() {
         label="Email"
         errors={errorsSignIn.email}
         registration={registerSignIn('email', { required: true })}
+        watch={watchSignIn}
       />
       <FormField
         placeholder="Enter your password"
@@ -29,6 +38,11 @@ export default function LoginForm() {
       <Button className="cursor-pointer" disabled={isSignInSubmitting} type="submit">
         {isSignInSubmitting ? 'Processing...' : 'Log in'}
       </Button>
+      {!verifiedEmail && (
+        <Button variant="outline" type="button" onClick={() => resendVerificationEmail(watchSignIn('email'))}>
+          Resend verification email
+        </Button>
+      )}
     </form>
   );
 }

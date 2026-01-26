@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { AppPath } from '../links';
 import { API_URL } from '../constants';
+import { useState } from 'react';
 
 const registerSchema = z
   .object({
@@ -30,13 +31,14 @@ const signInSchema = z.object({
 type SignInInputs = z.infer<typeof signInSchema>;
 
 export default function useAuth() {
+  const [verifiedEmail, setVerifiedEmail] = useState(true);
   const router = useRouter();
   // create user
   async function createUser(
     email: string,
     password: string,
     captchaToken: string,
-    onSuccess?: () => void
+    onSuccess?: () => void,
   ) {
     try {
       const response = await fetch(`${API_URL}/register`, {
@@ -49,11 +51,8 @@ export default function useAuth() {
         toast.error(data.error || 'Failed to register');
         return;
       }
-      toast.success('Success! You will be redirected to the login page now.');
-      if (onSuccess) {
-        onSuccess();
-        router.push('/auth/sign-in');
-      }
+      toast.success('Success! Please check your inbox for a verification email.');
+      resetRegister();
     } catch (error) {
       console.log((error as Error).message);
       toast.error('Something went wrong. Try again later.');
@@ -93,11 +92,24 @@ export default function useAuth() {
     register: registerSignIn,
     handleSubmit: handleSubmitSignIn,
     reset: resetSignIn,
+    watch: watchSignIn,
     formState: { errors: errorsSignIn, isSubmitting: isSignInSubmitting },
   } = useForm<SignInInputs>({ resolver: zodResolver(signInSchema), mode: 'onChange' });
 
   // sign in function
   async function onSubmitSignIn({ email, password }: SignInInputs) {
+    const resVerified = await fetch('/api/check-email-verified', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+    const data = await resVerified.json();
+
+    if (data.exists && !data.verified) {
+      setVerifiedEmail(false);
+      toast.error('Please verify your email before signing in.');
+      return;
+    }
+
     const result = await signIn('credentials', {
       redirect: false,
       email,
@@ -105,11 +117,26 @@ export default function useAuth() {
       callbackUrl: AppPath.MyTasks,
     });
     if (result?.error) {
-      toast.error('Invalid credentials');
+      toast.error('Invalid credentials.');
     } else {
       toast.success('Logged in successfully! Loading your tasks...');
       resetSignIn();
       router.push(AppPath.MyTasks);
+    }
+  }
+
+  async function resendVerificationEmail(email: string) {
+    try {
+      const res = await fetch('/api/resend-verification', {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) {
+        throw new Error('Failed to resend verification email.');
+      }
+      toast.success('Verification email sent.');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Something went wrong.');
     }
   }
 
@@ -125,5 +152,8 @@ export default function useAuth() {
     onSubmitSignIn,
     errorsSignIn,
     isSignInSubmitting,
+    verifiedEmail,
+    watchSignIn,
+    resendVerificationEmail,
   };
 }
