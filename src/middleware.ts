@@ -54,12 +54,18 @@ export async function middleware(req: NextRequest) {
   const isDemo = await isDemoUser(req);
 
   // Redirect unauthenticated users from protected routes
-  if (!isAuthenticated && [AppPath.MyTasks, AppPath.Settings, AppPath.MyCategories].some((p) => pathname.startsWith(p))) {
+  if (
+    !isAuthenticated &&
+    [AppPath.MyTasks, AppPath.Settings, AppPath.MyCategories].some((p) => pathname.startsWith(p))
+  ) {
     return NextResponse.redirect(new URL(AppPath.SignIn, req.url));
   }
 
   // Redirect demo users from protected routes to demo page
-  if (isDemo && [AppPath.MyTasks, AppPath.Settings, AppPath.MyCategories].some((p) => pathname.startsWith(p))) {
+  if (
+    isDemo &&
+    [AppPath.MyTasks, AppPath.Settings, AppPath.MyCategories].some((p) => pathname.startsWith(p))
+  ) {
     return NextResponse.redirect(new URL(AppPath.Demo, req.url));
   }
 
@@ -83,11 +89,11 @@ export async function middleware(req: NextRequest) {
     return response;
   }
 
-  // Redirect authenticated non-demo users away from sign-in/register pages
+  // Redirect authenticated non-demo users away from sign-in/register/verification pages
   if (
     isAuthenticated &&
     !isDemo &&
-    [AppPath.SignIn, AppPath.Register].some((p) => pathname === p)
+    [AppPath.SignIn, AppPath.Register, AppPath.VerifyEmail].some((p) => pathname === p)
   ) {
     return NextResponse.redirect(new URL(AppPath.MyTasks, req.url));
   }
@@ -99,6 +105,7 @@ export const config = {
     '/', // AppPath.Home
     '/auth/sign-in', // AppPath.SignIn
     '/auth/register', // AppPath.Register
+    '/auth/verify-email', // AppPath.VerifyEmail
     '/my-tasks', // AppPath.MyTasks
     '/my-tasks/:path*',
     '/categories/', // AppPath.MyCategories
