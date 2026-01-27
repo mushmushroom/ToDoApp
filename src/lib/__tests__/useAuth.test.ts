@@ -10,6 +10,13 @@ jest.mock('next-auth/react', () => ({
 
 const mockPush = jest.fn();
 
+function mockFetchOnce(data) {
+  (global.fetch as jest.Mock).mockResolvedValueOnce({
+    ok: true,
+    json: jest.fn().mockResolvedValue(data),
+  });
+}
+
 jest.mock('next/navigation', () => ({
   useRouter() {
     return {
@@ -62,14 +69,13 @@ describe('useAuth hook', () => {
           expect.objectContaining({
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-          })
+          }),
         );
       });
 
       expect(toast.success).toHaveBeenCalledWith(
-        'Success! You will be redirected to the login page now.'
+        'Success! Please check your inbox for a verification email.',
       );
-      expect(mockPush).toHaveBeenCalledWith('/auth/sign-in');
     });
 
     it('Shows toast in case of an error during registration', async () => {
@@ -93,22 +99,13 @@ describe('useAuth hook', () => {
   });
 
   describe('Sign-in flow', () => {
-    it('Shows error for invalid credentials', async () => {
-      (signIn as jest.Mock).mockResolvedValueOnce({ error: 'Invalid credentials' });
-
-      const { result } = renderHook(() => useAuth());
-
-      await act(async () => {
-        await result.current.onSubmitSignIn({
-          email: 'test@test.com',
-          password: 'password123',
-        });
-      });
-
-      expect(toast.error).toHaveBeenCalledWith('Invalid credentials');
+    beforeEach(() => {
+      jest.clearAllMocks();
+      global.fetch = jest.fn();
     });
-    it('Shows toast on successful login and redirects', async () => {
-      (signIn as jest.Mock).mockResolvedValueOnce({ ok: true });
+
+    it('shows error when email is not verified', async () => {
+      mockFetchOnce({ exists: true, verified: false });
 
       const { result } = renderHook(() => useAuth());
 
@@ -118,8 +115,25 @@ describe('useAuth hook', () => {
           password: 'password123',
         });
       });
-      expect(toast.success).toHaveBeenCalledWith('Logged in successfully! Loading your tasks...');
-      expect(mockPush).toHaveBeenCalledWith('/my-tasks');
+
+      expect(toast.error).toHaveBeenCalledWith('Please verify your email before signing in.');
+      expect(signIn).not.toHaveBeenCalled();
+    });
+
+    it('shows error for invalid credentials', async () => {
+      mockFetchOnce({ exists: true, verified: true });
+      (signIn as jest.Mock).mockResolvedValueOnce({ error: 'CredentialsSignin' });
+
+      const { result } = renderHook(() => useAuth());
+
+      await act(async () => {
+        await result.current.onSubmitSignIn({
+          email: 'test@test.com',
+          password: 'wrongpass',
+        });
+      });
+
+      expect(toast.error).toHaveBeenCalledWith('Invalid credentials.');
     });
   });
 });

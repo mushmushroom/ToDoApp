@@ -26,6 +26,7 @@ export async function sendMail({
   text: string;
   html?: string;
 }) {
+
   try {
     const isVerified = await transporter.verify();
   } catch (error) {

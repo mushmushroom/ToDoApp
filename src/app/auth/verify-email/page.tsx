@@ -29,7 +29,7 @@ export default function VerifyEmailPage() {
           router.push(AppPath.SignIn);
         }, 5000);
       },
-      onError: (err: any) => {
+      onError: (err) => {
         toast.error(err.message || 'Verification failed');
       },
     });

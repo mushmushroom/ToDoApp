@@ -1,9 +1,8 @@
 import prisma from '@/lib/config/prisma';
-import { API_URL, CHAR_LIMIT } from './src/lib/constants'
+import { API_URL, CHAR_LIMIT } from './src/lib/constants';
 
 import bcrypt from 'bcryptjs';
 import { defineConfig } from 'cypress';
-
 
 type Version = 'local' | 'staging' | 'prod';
 
@@ -21,11 +20,11 @@ export default defineConfig({
         },
 
         // create user
-        async createUser({ email, password }) {
+        async createUser({ email, password, email_verified }) {
           const hash = await bcrypt.hash(password, 10);
 
           await prisma.user.create({
-            data: { email, password: hash },
+            data: { email, password: hash, email_verified: email_verified || false },
           });
 
           return null;
@@ -48,7 +47,8 @@ export default defineConfig({
     env: {
       API_E2E_URL: API_URL,
       COOKIE_NAME: 'next-auth.session-token',
-      CHAR_LIMIT: CHAR_LIMIT
+      CHAR_LIMIT: CHAR_LIMIT,
+      SKIP_EMAILS: true,
     },
   },
 });
